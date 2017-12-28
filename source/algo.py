@@ -1,3 +1,4 @@
+from sys import argv
 from _heapq import *
 
 
@@ -23,9 +24,10 @@ def next_fit(inputs):
         if item + bins[index] > inputs[0]:
             index += 1
         bins[index] += item
-    print(bins)
     # We keep the bins containing items by filtering the bins list, then we return the length of this filtered list.
-    return len(list(filter(lambda x: x > 0, bins)))
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    print(opened_bins)
+    return len(opened_bins)
 
 
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
@@ -48,8 +50,9 @@ def first_fit(inputs):
         # if the bin can contain the item, we add it in the bin
         else:
             bins[index] += item
-    print(bins)
-    return len(list(filter(lambda x: x > 0, bins)))
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    print(opened_bins)
+    return len(opened_bins)
 
 
 # 1. Put each item into the emptiest bin among those with something in them.
@@ -79,8 +82,59 @@ def worst_fit(inputs):
         # if the emptiest bin can contain the item, we add it in the bin
         else:
             bins[min_index] += item
-    print(bins)
-    return len(list(filter(lambda x: x > 0, bins)))
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    print(opened_bins)
+    return len(opened_bins)
+
+
+# Same as worst fit, but we put the item in the second-emptiest bin
+# Complexity : For each value, we iterate over the bins to find the second-emptiest one => O(n^2)
+def almost_worst_fit(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    for item in inputs[1]:
+        j = index
+        min_index = j
+        min_val = inputs[0]
+        second_min_index = None
+        first_loop = True
+        # we browse the opened bins to find the emptiest one
+        while j >= 0:
+            # the possible equality with min_val guarantees that the earliest opened bin will be picked in case of tie,
+            # as we browse the bins from the latest opened one to the earliest opened one
+            if bins[j] <= min_val:
+                # if the current bin is the first valid one encountered, we don't set the second emptiest bin index
+                if first_loop:
+                    first_loop = False
+                else:
+                    second_min_index = min_index
+                min_index = j
+                min_val = bins[j]
+            j -= 1
+        # we set the emptiest bin index to the second emptiest bin index if it exists
+        # What if the second-emptiest one exists but cannot contain item ?
+
+        # Case : create another
+        # Here, the next if condition will check if the second_min_index can contain the item.
+        # Supposing it cannot, another bin will be opened.
+        # if second_min_index is not None:
+        #     min_index = second_min_index
+
+        # Case : check if the second emptiest one can contain the item, and take this one if it is the case.
+        # Otherwise, keep the emptiest one.
+        if second_min_index is not None and item + bins[second_min_index] < inputs[0]:
+                min_index = second_min_index
+
+        # if the bin cannot contain the item, we create one
+        if item + bins[min_index] > inputs[0]:
+            index += 1
+            bins[index] += item
+        # if the bin can contain the item, we add it in the bin
+        else:
+            bins[min_index] += item
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    print(opened_bins)
+    return len(opened_bins)
 
 
 # Array of two elements arrays [valBin, numBin]
@@ -129,8 +183,9 @@ def best_fit(inputs):
         else:
             # we add the item in the bin
             bins[max_index] += item
-    print(bins)
-    return len(list(filter(lambda x: x > 0, bins)))
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    print(opened_bins)
+    return len(opened_bins)
 
 
 # Returns the input in a tuple
@@ -146,7 +201,7 @@ def get_inputs(file_path):
 
 
 if __name__ == '__main__':
-    values = get_inputs("test_files/exemple100.txt")
+    values = get_inputs(argv[1])
     print("next fit :")
     print(next_fit(values))
     print("first fit :")
@@ -155,5 +210,7 @@ if __name__ == '__main__':
     print(worst_fit(values))
     print("worst fit nlogn :")
     print(worst_fit_log(values))
+    print("almost worst fit :")
+    print(almost_worst_fit(values))
     print("best fit :")
     print(best_fit(values))

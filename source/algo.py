@@ -26,8 +26,8 @@ def next_fit(inputs):
         bins[index] += item
     # We keep the bins containing items by filtering the bins list, then we return the length of this filtered list.
     opened_bins = list(filter(lambda x: x > 0, bins))
-    print(opened_bins)
-    return len(opened_bins)
+    print(len(opened_bins))
+    return opened_bins
 
 
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
@@ -51,8 +51,7 @@ def first_fit(inputs):
         else:
             bins[index] += item
     opened_bins = list(filter(lambda x: x > 0, bins))
-    print(opened_bins)
-    return len(opened_bins)
+    return opened_bins
 
 
 # 1. Put each item into the emptiest bin among those with something in them.
@@ -83,8 +82,7 @@ def worst_fit(inputs):
         else:
             bins[min_index] += item
     opened_bins = list(filter(lambda x: x > 0, bins))
-    print(opened_bins)
-    return len(opened_bins)
+    return opened_bins
 
 
 # Same as worst fit, but we put the item in the second-emptiest bin
@@ -133,8 +131,7 @@ def almost_worst_fit(inputs):
         else:
             bins[min_index] += item
     opened_bins = list(filter(lambda x: x > 0, bins))
-    print(opened_bins)
-    return len(opened_bins)
+    return opened_bins
 
 
 # Array of two elements arrays [valBin, numBin]
@@ -151,8 +148,7 @@ def worst_fit_log(inputs):
             heappush(heap, [item, len(heap)])  # O(log n)
         else:
             heapreplace(heap, [heap[0][0] + item, heap[0][1]])  # O(1) for access, O(log n) for insert
-    print(heap)
-    return len(heap)
+    return heap
 
 
 # Place each item in the fullest one capable of containing the item.
@@ -184,8 +180,7 @@ def best_fit(inputs):
             # we add the item in the bin
             bins[max_index] += item
     opened_bins = list(filter(lambda x: x > 0, bins))
-    print(opened_bins)
-    return len(opened_bins)
+    return opened_bins
 
 
 # Returns the input in a tuple
@@ -203,14 +198,26 @@ def get_inputs(file_path):
 if __name__ == '__main__':
     values = get_inputs(argv[1])
     print("next fit :")
-    print(next_fit(values))
+    nf = next_fit(values)
+    print(nf)
+    print(len(nf))
     print("first fit :")
-    print(first_fit(values))
+    ff = first_fit(values)
+    print(ff)
+    print(len(ff))
     print("worst fit :")
-    print(worst_fit(values))
+    wf = worst_fit(values)
+    print(wf)
+    print(len(wf))
     print("worst fit nlogn :")
-    print(worst_fit_log(values))
+    wf_log = worst_fit_log(values)
+    print(wf_log)
+    print(len(wf_log))
     print("almost worst fit :")
-    print(almost_worst_fit(values))
+    awf = almost_worst_fit(values)
+    print(awf)
+    print(len(awf))
     print("best fit :")
-    print(best_fit(values))
+    bf = best_fit(values)
+    print(bf)
+    print(len(bf))

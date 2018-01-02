@@ -1,16 +1,38 @@
 #! /usr/bin/env python3
 
 from random import randint
-
+import time
 from source.algo import *
 
 
-def moyenne_remplissage(res):
-    return sum(res) / len(res)
+def execTime(fit_func, inputs):
+    start = time.perf_counter()
+    fit_result = fit_func(inputs)
+    end = time.perf_counter()
+    packing_mean = moyenne_remplissage(fit_result)
+    percent_mean = pourcentage_moyen_remplissage(packing_mean, inputs[0])
+    return end - start, packing_mean, percent_mean, len(fit_result), fit_result
 
 
-def pourcentage_moyen_remplissage(res, t_bin):
-    return moyenne_remplissage(res) * 100 / t_bin
+def moyenne_remplissage(fit_result):
+    return sum(fit_result) / len(fit_result)
+
+
+def pourcentage_moyen_remplissage(mean, size):
+    return mean * 100 / size
+
+
+def printStats(fit_func):
+    for i in range(nb_simulations):
+        objets = [randint(valeur_min, valeur_max) for _ in range(nb_objets)]
+        print("Simulation " + str(i) + " :")
+        print(fit_func.__name__)
+        print("Objets générés : " + str(objets))
+        exec_time, mean, percent, bin_number, result = execTime(fit_func, [taille_bin, objets])
+        print("Temps d'éxéctution", exec_time)
+        print("Résultat : " + str(result))
+        print("Nombre de boites", bin_number)
+        print("Moyenne de remplissage des boites", mean, "ou", percent, "%")
 
 
 if __name__ == '__main__':
@@ -19,12 +41,9 @@ if __name__ == '__main__':
     valeur_min = int(input("Valeur minimale d'un objet : "))
     valeur_max = int(input("Valeur maximale d'un objet : "))
     nb_simulations = int(input("Nombre de simulations : "))
-    for i in range(nb_simulations):
-        print("Simulation " + str(i) + " :")
-        objets = [randint(valeur_min, valeur_max) for _ in range(nb_objets)]
-        print("Objets générés : " + str(objets))
-        liste = first_fit([taille_bin, objets])
-        print("Résultat : " + str(liste))
-        print("Remplissage moyen : " + str(moyenne_remplissage(liste)))
-        print("Pourcentage de remplissage moyen : " + str(pourcentage_moyen_remplissage(liste, taille_bin)) + " %")
-        print()
+    printStats(next_fit)
+    printStats(first_fit)
+    printStats(worst_fit)
+    # printStats(worst_fit_log)
+    printStats(almost_worst_fit)
+    printStats(best_fit)

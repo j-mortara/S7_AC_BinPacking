@@ -5,7 +5,7 @@ import time
 from source.algo import *
 
 
-def execTime(fit_func, inputs):
+def execStats(fit_func, inputs):
     start = time.perf_counter()
     fit_result = fit_func(inputs)
     end = time.perf_counter()
@@ -25,7 +25,7 @@ def pourcentage_moyen_remplissage(mean, size):
 def printStats(fit_func):
     print(fit_func.__name__)
     print("Objets générés : " + str(objets))
-    exec_time, mean, percent, bin_number, result = execTime(fit_func, [taille_bin, objets])
+    exec_time, mean, percent, bin_number, result = execStats(fit_func, [taille_bin, objets])
     print("Temps d'éxéctution", exec_time)
     print("Résultat : " + str(result))
     print("Nombre de boites", bin_number)

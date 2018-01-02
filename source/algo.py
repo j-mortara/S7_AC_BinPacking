@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
-from sys import argv
 from _heapq import *
+from sys import argv
 
 
 # def next_fit_no_list(inputs):
@@ -57,26 +57,29 @@ def first_fit(inputs):
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
 '''
+
+
 def first_fit(inputs):
-	bins = [0] * len(inputs[1])
-	index = 0
-	previousItem = float('inf')
-	previousIndex = -1
-	for item in inputs[1]:
-		if item < previousItem :
-			iterator = 0
-		else :
-			iterator = previousIndex
+    bins = [0] * len(inputs[1])
+    index = 0
+    previousItem = float('inf')
+    previousIndex = -1
+    for item in inputs[1]:
+        if item < previousItem:
+            iterator = 0
+        else:
+            iterator = previousIndex
 
-		while item + bins[iterator] > inputs[0] :
-			iterator += 1
+        while item + bins[iterator] > inputs[0]:
+            iterator += 1
 
-		bins[iterator] += item
-		previousItem = item
-		previousIndex = iterator
+        bins[iterator] += item
+        previousItem = item
+        previousIndex = iterator
 
-	opened_bins = list(filter(lambda x: x > 0, bins))
-	return opened_bins
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+
 
 # 1. Put each item into the emptiest bin among those with something in them.
 # Only start a new bin if the item doesn't fit into any bin that's already been started.

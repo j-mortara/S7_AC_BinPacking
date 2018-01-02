@@ -4,15 +4,15 @@ from sys import argv
 from _heapq import *
 
 
-def next_fit_no_list(inputs):
-    nb_bins = 1
-    remaining_space_in_bin = inputs[0]
-    for item_value in inputs[1]:
-        if item_value > remaining_space_in_bin:
-            nb_bins += 1
-            remaining_space_in_bin = inputs[0]
-        remaining_space_in_bin -= item_value
-    return nb_bins
+# def next_fit_no_list(inputs):
+#     nb_bins = 1
+#     remaining_space_in_bin = inputs[0]
+#     for item_value in inputs[1]:
+#         if item_value > remaining_space_in_bin:
+#             nb_bins += 1
+#             remaining_space_in_bin = inputs[0]
+#         remaining_space_in_bin -= item_value
+#     return nb_bins
 
 
 # If the item fits in the same bin as the previous item, put it there. Otherwise, open a new bin and put it in there.
@@ -20,20 +20,21 @@ def next_fit_no_list(inputs):
 def next_fit(inputs):
     # For n values to store, the maximum number of bins is n,
     # so we directly create a list of n bins to avoid appending items
-    bins = [0] * len(inputs[1])
-    index = 0
-    for item in inputs[1]:
-        if item + bins[index] > inputs[0]:
-            index += 1
-        bins[index] += item
+    bins = [0] * len(inputs[1])  # Array of maximum size: number of items
+    index = 0  # iterator
+    for item in inputs[1]:  # for each item
+        if item + bins[index] > inputs[0]:  # if the capacity for the current bin is not enough for this item
+            index += 1  # get a new bin
+        bins[index] += item  # add the new item
     # We keep the bins containing items by filtering the bins list, then we return the length of this filtered list.
-    opened_bins = list(filter(lambda x: x > 0, bins))
+    opened_bins = list(filter(lambda x: x > 0, bins))  # used to remove all unused (=empty) bins
     print(len(opened_bins))
     return opened_bins
 
 
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
 # Complexity : Worst case -> for each value, the first empty enough bin is at the beginning of the array => O(n^2)
+# can be implemented in O(n Log n) time using Self-Balancing Binary Search Trees.
 def first_fit(inputs):
     bins = [0] * len(inputs[1])
     index = 0
@@ -123,7 +124,7 @@ def almost_worst_fit(inputs):
         # Case : check if the second emptiest one can contain the item, and take this one if it is the case.
         # Otherwise, keep the emptiest one.
         if second_min_index is not None and item + bins[second_min_index] < inputs[0]:
-                min_index = second_min_index
+            min_index = second_min_index
 
         # if the bin cannot contain the item, we create one
         if item + bins[min_index] > inputs[0]:

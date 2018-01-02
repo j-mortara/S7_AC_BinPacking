@@ -143,7 +143,7 @@ def almost_worst_fit(inputs):
 # If the two emptiest bins have the same value, priority is given to the last opened.
 # We use a heap to represent this problem, as we have O(1) access to the lowest value.
 # Insertion in the heap is done in O(log n) for each item, therefore the complexity is O(n log n).
-def worst_fit_log(inputs):
+def _worst_fit_log(inputs):
     # bins = [[0, 0] for _ in range(len(inputs[1]))]
     heap = []
     for item in inputs[1]:
@@ -152,6 +152,11 @@ def worst_fit_log(inputs):
         else:
             heapreplace(heap, [heap[0][0] + item, heap[0][1]])  # O(1) for access, O(log n) for insert
     return heap
+
+
+def worst_fit_log(inputs):
+    # bins = [[0, 0] for _ in range(len(inputs[1]))]
+    return [i[0] for i in _worst_fit_log(inputs)]
 
 
 # Place each item in the fullest one capable of containing the item.

@@ -23,16 +23,13 @@ def pourcentage_moyen_remplissage(mean, size):
 
 
 def printStats(fit_func):
-    for i in range(nb_simulations):
-        objets = [randint(valeur_min, valeur_max) for _ in range(nb_objets)]
-        print("Simulation " + str(i) + " :")
-        print(fit_func.__name__)
-        print("Objets générés : " + str(objets))
-        exec_time, mean, percent, bin_number, result = execTime(fit_func, [taille_bin, objets])
-        print("Temps d'éxéctution", exec_time)
-        print("Résultat : " + str(result))
-        print("Nombre de boites", bin_number)
-        print("Moyenne de remplissage des boites", mean, "ou", percent, "%")
+    print(fit_func.__name__)
+    print("Objets générés : " + str(objets))
+    exec_time, mean, percent, bin_number, result = execTime(fit_func, [taille_bin, objets])
+    print("Temps d'éxéctution", exec_time)
+    print("Résultat : " + str(result))
+    print("Nombre de boites", bin_number)
+    print("Moyenne de remplissage des boites", mean, "ou", percent, "%\n")
 
 
 if __name__ == '__main__':
@@ -41,9 +38,10 @@ if __name__ == '__main__':
     valeur_min = int(input("Valeur minimale d'un objet : "))
     valeur_max = int(input("Valeur maximale d'un objet : "))
     nb_simulations = int(input("Nombre de simulations : "))
+    objets = [randint(valeur_min, valeur_max) for _ in range(nb_objets)]
     printStats(next_fit)
     printStats(first_fit)
     printStats(worst_fit)
-    # printStats(worst_fit_log)
+    printStats(worst_fit_log)
     printStats(almost_worst_fit)
     printStats(best_fit)

@@ -41,9 +41,6 @@ def writeToCSVFile(file, nbs_objects, stats):
             file.write("\n")
 
 
-# file.write(name + ";" + ';'.join(map(str, stats)) + ";\n")
-
-
 def printStats(name, objets, exec_time, percent, bin_number, result):
     print(name)
     print("Objets générés : " + str(objets))

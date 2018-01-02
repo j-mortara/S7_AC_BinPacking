@@ -35,6 +35,7 @@ def next_fit(inputs):
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
 # Complexity : Worst case -> for each value, the first empty enough bin is at the beginning of the array => O(n^2)
 # can be implemented in O(n Log n) time using Self-Balancing Binary Search Trees.
+'''
 def first_fit(inputs):
     bins = [0] * len(inputs[1])
     index = 0
@@ -55,7 +56,27 @@ def first_fit(inputs):
             bins[index] += item
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
+'''
+def first_fit(inputs):
+	bins = [0] * len(inputs[1])
+	index = 0
+	previousItem = float('inf')
+	previousIndex = -1
+	for item in inputs[1]:
+		if item < previousItem :
+			iterator = 0
+		else :
+			iterator = previousIndex
 
+		while item + bins[iterator] > inputs[0] :
+			iterator += 1
+
+		bins[iterator] += item
+		previousItem = item
+		previousIndex = iterator
+
+	opened_bins = list(filter(lambda x: x > 0, bins))
+	return opened_bins
 
 # 1. Put each item into the emptiest bin among those with something in them.
 # Only start a new bin if the item doesn't fit into any bin that's already been started.

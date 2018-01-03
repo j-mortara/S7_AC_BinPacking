@@ -10,6 +10,11 @@ names = ["execution time", "packing percent", "bin number"]
 
 
 def execStats(fit_func, inputs):
+    """ This function executes the given function and returns statistics on the result of the function
+    :param fit_func: the function to execute
+    :param inputs: the inputs to give to the function
+    :return: Execution Time, Percentage of packing, Number of bins, And the function's result
+    """
     start = time.perf_counter()
     fit_result = fit_func(inputs)
     end = time.perf_counter()
@@ -28,6 +33,14 @@ def pourcentage_moyen_remplissage(mean, size):
 
 
 def writeToCSVFile(file, nbs_objects, stats):
+    """
+    Writes the statistics to a csv file
+    :param file: File to write the data on
+    :param nbs_objects: a list of ids that identifies several executions
+    can be empty if there is only one for each fucntion
+    :param stats: the statistics it is a dictionnary with functions as keys and arrays of arrays as values
+    :return:
+    """
     file.write(";")
     nb = len(list(stats.values())[0][0])
     for n in names:
@@ -43,6 +56,10 @@ def writeToCSVFile(file, nbs_objects, stats):
 
 
 def printStats(name, objets, exec_time, percent, bin_number, result):
+    """Prints the given statistics on the standard output, name corresponds to
+    function's name, objets the objects given to the function
+    """
+
     print(name)
     print("Objets générés : " + str(objets))
 
@@ -69,17 +86,31 @@ def main():
             writeToCSVFile(file, [""], every_stats)
 
 
-def doRandomTests(functions, taille_bin, valeur_max, valeur_min):
+def doRandomTests(functions, bin_size, max_value, min_value):
+    """
+    Generates random lists of objects of different sizes and executes functio on them
+    :param functions: a list of functions to execute
+    :param bin_size: size of the bin
+    :param max_value: maximum value of an object
+    :param min_value: minimum value of an object
+    :return:
+    """
     every_stats = {f.__name__: [] for f in functions}
     nbs_objects = [100, 200, 500, 1000]
     for nb in nbs_objects:
-        objects = [randint(valeur_min, valeur_max) for _ in range(nb)]
-        execFunctions(every_stats, functions, objects, taille_bin)
+        objects = [randint(min_value, max_value) for _ in range(nb)]
+        execFunctions(every_stats, functions, objects, bin_size)
     with open(path, "w") as file:
         writeToCSVFile(file, nbs_objects, every_stats)
 
 
 def execFunctions(every_stats, functions, objects, bin_size):
+    """ the function executes the given functions and adds their stats to every_stats dict
+    :param every_stats: A dict with keys that are function and values that are arrays
+    :param functions: a list of functions to execute
+    :param objects: a list of numbers representing the size of an object
+    :param bin_size: the size of the bins
+    """
     for f in functions:
         stats = execStats(f, (bin_size, objects))
         every_stats[f.__name__].append(stats)

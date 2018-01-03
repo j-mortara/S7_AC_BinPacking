@@ -1,0 +1,6 @@
+Taille bin dec
+27
+Objets
+16, 12, 8, 7, 4, 4, 3
+Res
+2 bins, analogie avec P04 somme des objets = n* taile bin

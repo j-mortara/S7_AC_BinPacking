@@ -6,6 +6,7 @@ from random import randint
 from source.algo import *
 
 path = "res.csv"
+names = ["execution time", "packing percent", "bin number"]
 
 
 def execStats(fit_func, inputs):
@@ -27,18 +28,18 @@ def pourcentage_moyen_remplissage(mean, size):
 
 
 def writeToCSVFile(file, nbs_objects, stats):
-    nb = len(list(stats.values())[0][0])
-    name = ["execution time", "packing percent", "bin number"]
     file.write(";")
-    for i in nbs_objects:
-        file.write(str(i) + ";")
+    nb = len(list(stats.values())[0][0])
+    for n in names:
+        for number in nbs_objects:
+            file.write(n + " " + str(number) + ";")
     file.write("\n")
-    for i in range(nb - 1):
-        for k, v in stats.items():
-            file.write(k + " " + name[i] + ";")
-            for stat in v:
+    for k, statList in stats.items():
+        file.write(k + ";")
+        for i in range(nb - 1):
+            for stat in statList:
                 file.write(str(stat[i]) + ";")
-            file.write("\n")
+        file.write("\n")
 
 
 def printStats(name, objets, exec_time, percent, bin_number, result):
@@ -53,28 +54,36 @@ def printStats(name, objets, exec_time, percent, bin_number, result):
 
 
 def main():
-    taille_bin = int(input("Taille bin : "))
-    # nb_objects = int(input("Nombre d'objects : "))
-    valeur_min = int(input("Valeur minimale d'un objet : "))
-    valeur_max = int(input("Valeur maximale d'un objet : "))
-    taille_bin = 100
-    valeur_min = 1
-    valeur_max = 100
     functions = [next_fit, first_fit, worst_fit, worst_fit_log, almost_worst_fit, best_fit]
-    doRandomTests(functions, taille_bin, valeur_max, valeur_min)
+    example = input("Fichier d'exemple : ")
+    if example == "":
+        bin_size = int(input("Taille bin : "))
+        valeur_min = int(input("Valeur minimale d'un objet : "))
+        valeur_max = int(input("Valeur maximale d'un objet : "))
+        doRandomTests(functions, bin_size, valeur_max, valeur_min)
+    else:
+        bin_size, objects = get_inputs(example)
+        every_stats = {f.__name__: [] for f in functions}
+        execFunctions(every_stats, functions, objects, bin_size)
+        with open(path, "w") as file:
+            writeToCSVFile(file, [""], every_stats)
 
 
 def doRandomTests(functions, taille_bin, valeur_max, valeur_min):
     every_stats = {f.__name__: [] for f in functions}
-    nbs_objects = [100, 200, 500, 1000, 10000]
+    nbs_objects = [100, 200, 500, 1000]
     for nb in nbs_objects:
         objects = [randint(valeur_min, valeur_max) for _ in range(nb)]
-        for f in functions:
-            stats = execStats(f, (taille_bin, objects))
-            every_stats[f.__name__].append(stats)
-            printStats(f.__name__, objects, *stats)
-        with open(path, "w") as file:
-            writeToCSVFile(file, nbs_objects, every_stats)
+        execFunctions(every_stats, functions, objects, taille_bin)
+    with open(path, "w") as file:
+        writeToCSVFile(file, nbs_objects, every_stats)
+
+
+def execFunctions(every_stats, functions, objects, bin_size):
+    for f in functions:
+        stats = execStats(f, (bin_size, objects))
+        every_stats[f.__name__].append(stats)
+        printStats(f.__name__, objects, *stats)
 
 
 if __name__ == '__main__':

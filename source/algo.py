@@ -33,22 +33,25 @@ def next_fit(inputs):
 
 
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
-# Complexity : Worst case -> for each value, the first empty enough bin is at the beginning of the array => O(n^2)
-# can be implemented in O(n Log n) time using Self-Balancing Binary Search Trees.
+# Complexity : Worst case -> when the item to place is lighter than the previous one, we are starting to iterate from index 0 => O(n^2)
+# Complexity : Best case -> when the item to place is weighter (or equal) than the previous one, we are starting to iterate from the previous index 0 => O(???)
 def first_fit(inputs):
     bins = [0] * len(inputs[1])
     index = 0
+    # For the first iteration we are considering the previous item as an infinite weighted item.
     previousItem = float('inf')
     previousIndex = -1
     for item in inputs[1]:
+        # If the next item is lighter than the previous one, iterate from 0
         if item < previousItem:
             iterator = 0
+        # Else we are starting to iterate from the last bin used (the bins before are too full to be used).
         else:
             iterator = previousIndex
-
+        # We are iterating to a bin usa
         while item + bins[iterator] > inputs[0]:
             iterator += 1
-
+        # Store the item, save its weight and the bin index used.
         bins[iterator] += item
         previousItem = item
         previousIndex = iterator

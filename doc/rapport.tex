@@ -33,6 +33,7 @@
 \usepackage{listings} % Required for insertion of code
 \usepackage{courier} % Required for the courier font
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage[french]{babel}
 
 % Margins
 \topmargin=-0.45in
@@ -51,7 +52,7 @@
 \rhead{\firstxmark} % Top right header
 \lfoot{\lastxmark} % Bottom left footer
 \cfoot{} % Bottom center footer
-\rfoot{Page\ \thepage\ of\ \protect\pageref{LastPage}} % Bottom right footer
+\rfoot{Page\ \thepage\ sur\ \protect\pageref{LastPage}} % Bottom right footer
 \renewcommand\headrulewidth{0.4pt} % Size of the header rule
 \renewcommand\footrulewidth{0.4pt} % Size of the footer rule
 
@@ -62,8 +63,8 @@
 %----------------------------------------------------------------------------------------
 
 \definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0} % This is the color used for comments
-\lstloadlanguages{Perl} % Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
-\lstset{language=Perl, % Use Perl in this example
+\lstloadlanguages{Python} % Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
+\lstset{language=Python, % Use Perl in this example
         frame=single, % Single frame around code
         basicstyle=\small\ttfamily, % Use small true type font
         keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
@@ -88,57 +89,9 @@
         numbers=left, % Line numbers on left
         firstnumber=1, % Line numbers start with line 1
         numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
-        stepnumber=5 % Line numbers go in steps of 5
-}
-
-% Creates a new command to include a perl script, the first parameter is the filename of the script (without .pl), the second parameter is the caption
-\newcommand{\perlscript}[2]{
-\begin{itemize}
-\item[]\lstinputlisting[caption=#2,label=#1]{#1.pl}
-\end{itemize}
-}
-
-%----------------------------------------------------------------------------------------
-%	DOCUMENT STRUCTURE COMMANDS
-%	Skip this unless you know what you're doing
-%----------------------------------------------------------------------------------------
-
-% Header and footer for when a page split occurs within a problem environment
-\newcommand{\enterProblemHeader}[1]{
-\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
-\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
-}
-
-% Header and footer for when a page split occurs between problem environments
-\newcommand{\exitProblemHeader}[1]{
-\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
-\nobreak\extramarks{#1}{}\nobreak
-}
-
-\setcounter{secnumdepth}{0} % Removes default section numbers
-\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
-
-\newcommand{\homeworkProblemName}{}
-\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
-\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
-\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
-\section{\homeworkProblemName} % Make a section in the document with the custom problem count
-\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
-}{
-\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
-}
-
-\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
-\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
-}
-
-\newcommand{\homeworkSectionName}{}
-\newenvironment{homeworkSection}[1]{ % New environment for sections within homework problems, takes 1 argument - the name of the section
-\renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the name of the section from the environment argument
-\subsection{\homeworkSectionName} % Make a subsection with the custom name of the subsection
-\enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]} % Header and footer within the environment
-}{
-\enterProblemHeader{\homeworkProblemName} % Header and footer after the environment
+        stepnumber=5, % Line numbers go in steps of 5
+        columns=fullflexible,
+        keepspaces=true,
 }
 
 %----------------------------------------------------------------------------------------
@@ -177,39 +130,236 @@
 %\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
 
 \newpage
+\selectlanguage{french}
 \tableofcontents
 \newpage
 
 %----------------------------------------------------------------------------------------
-%	PROBLEM 1
+%	Next Fit
 %----------------------------------------------------------------------------------------
 
 % To have just one problem per page, simply put a \clearpage after each problem
 
-\begin{homeworkProblem}
-Listing \ref{homework_example} shows a Perl script.
+\section{Next Fit}
 
-\perlscript{homework_example}{Sample Perl Script With Highlighting}
+\subsection{Description théorique de l'algorithme}
+
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def next_fit(inputs):
+    # For n values to store, the maximum number of bins is n,
+    # so we directly create a list of n bins to avoid appending items
+    bins = [0] * len(inputs[1])  # Array of maximum size: number of items
+    index = 0  # iterator
+    for item in inputs[1]:  # for each item
+        # if the capacity for the current bin is not enough for this item
+        if item + bins[index] > inputs[0]:
+            index += 1  # get a new bin
+        bins[index] += item  # add the new item
+    # We keep the bins containing items by filtering the bins list, 
+    # then we return the length of this filtered list.
+    
+    # used to remove all unused (=empty) bins
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    print(len(opened_bins))
+    return opened_bins
+\end{lstlisting}
+
+\subsection{Explication et remarques à propos de l'implémentation}
 
 \lipsum[1]
-\end{homeworkProblem}
 
 %----------------------------------------------------------------------------------------
-%	PROBLEM 2
+%	First Fit
 %----------------------------------------------------------------------------------------
 
-\begin{homeworkProblem}
-\lipsum[2]
+\section{First Fit}
+\subsection{Description théorique de l'algorithme}
 
-\problemAnswer{
-\begin{center}
-\includegraphics[width=0.75\columnwidth]{example_figure} % Example image
-\end{center}
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def first_fit(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    # For the first iteration we are considering the previous item as an infinite weighted item.
+    previousItem = float('inf')
+    previousIndex = -1
+    for item in inputs[1]:
+        # If the next item is lighter than the previous one, iterate from 0
+        if item < previousItem:
+            iterator = 0
+        # Else we are starting to iterate from the last bin used (the bins before are too full to be used).
+        else:
+            iterator = previousIndex
+        # We are iterating to a bin usa
+        while item + bins[iterator] > inputs[0]:
+            iterator += 1
+        # Store the item, save its weight and the bin index used.
+        bins[iterator] += item
+        previousItem = item
+        previousIndex = iterator
 
-\lipsum[3-5]
-}
-\end{homeworkProblem}
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
+
+\subsection{Explication et remarques à propos de l'implémentation}
+\lipsum[1]
 
 %----------------------------------------------------------------------------------------
+%	Worst Fit
+%----------------------------------------------------------------------------------------
 
+% To have just one problem per page, simply put a \clearpage after each problem
+
+\section{Worst Fit}
+
+\subsection{Description théorique de l'algorithme}
+
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def worst_fit(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    for item in inputs[1]:
+        j = index
+        min_index = j
+        min_val = inputs[0]
+        # we browse the opened bins to find the emptiest one
+        while j >= 0:
+            # the possible equality with min_val guarantees that the earliest opened bin will be picked in case of tie,
+            # as we browse the bins from the latest opened one to the earliest opened one
+            if bins[j] <= min_val:
+                min_val = bins[j]
+                min_index = j
+            j -= 1
+        # if the emptiest bin cannot contain the item, we create one
+        if item + bins[min_index] > inputs[0]:
+            index += 1
+            bins[index] += item
+        # if the emptiest bin can contain the item, we add it in the bin
+        else:
+            bins[min_index] += item
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
+
+\subsection{Explication et remarques à propos de l'implémentation}
+\lipsum[1]
+
+
+%----------------------------------------------------------------------------------------
+%	Almost Worst Fit
+%----------------------------------------------------------------------------------------
+
+% To have just one problem per page, simply put a \clearpage after each problem
+
+\section{Almost Worst Fit}
+
+\subsection{Description théorique de l'algorithme}
+
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+    bins = [0] * len(inputs[1])
+    index = 0
+    for item in inputs[1]:
+        j = index
+        min_index = j
+        min_val = inputs[0]
+        second_min_index = None
+        first_loop = True
+        # we browse the opened bins to find the emptiest one
+        while j >= 0:
+            # the possible equality with min_val guarantees that the earliest opened bin will be picked in case of tie,
+            # as we browse the bins from the latest opened one to the earliest opened one
+            if bins[j] <= min_val:
+                # if the current bin is the first valid one encountered, we don't set the second emptiest bin index
+                if first_loop:
+                    first_loop = False
+                else:
+                    second_min_index = min_index
+                min_index = j
+                min_val = bins[j]
+            j -= 1
+        # we set the emptiest bin index to the second emptiest bin index if it exists
+        # What if the second-emptiest one exists but cannot contain item ?
+
+        # Case : create another
+        # Here, the next if condition will check if the second_min_index can contain the item.
+        # Supposing it cannot, another bin will be opened.
+        # if second_min_index is not None:
+        #     min_index = second_min_index
+
+        # Case : check if the second emptiest one can contain the item, and take this one if it is the case.
+        # Otherwise, keep the emptiest one.
+        if second_min_index is not None and item + bins[second_min_index] < inputs[0]:
+            min_index = second_min_index
+
+        # if the bin cannot contain the item, we create one
+        if item + bins[min_index] > inputs[0]:
+            index += 1
+            bins[index] += item
+        # if the bin can contain the item, we add it in the bin
+        else:
+            bins[min_index] += item
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
+
+\subsection{Explication et remarques à propos de l'implémentation}
+\lipsum[1]
+
+
+%----------------------------------------------------------------------------------------
+%	Best Fit
+%----------------------------------------------------------------------------------------
+
+% To have just one problem per page, simply put a \clearpage after each problem
+
+\section{Best Fit}
+\subsection{Description théorique de l'algorithme}
+
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def best_fit(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    for item in inputs[1]:
+        j = index
+        max_index = j
+        max_val = 0
+        # we browse the opened bins to find the adequate bin
+        while j >= 0:
+            # if the bin is fullest than the previous valid one but can still contain the item,
+            # it becomes the new valid one
+            if max_val < bins[j] <= inputs[0] - item:
+                max_val = bins[j]
+                max_index = j
+            j -= 1
+        # If we enter this condition, this means that the bin at index max_index cannot contain the item.
+        # In order to enter this condition, max_index must be equal to 0.
+        # Indeed, having max_index != 0 implies that we entered the precedent if condition at least once,
+        # meaning that the bin at index max_index can contain the item.
+        # Therefore, we know by entering this condition that no bin can contain the item, so we open a new one.
+        if item + bins[max_index] > inputs[0]:
+            index += 1
+            bins[index] += item
+        else:
+            # we add the item in the bin
+            bins[max_index] += item
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
+
+\subsection{Explication et remarques à propos de l'implémentation}
+\lipsum[1]
+
+%----------------------------------------------------------------------------------------
+%	Statistiques
+%----------------------------------------------------------------------------------------
+
+\section{Analyse et comparaison des algorithmes}
+\subsection{Exemples proposés}
+\subsection{Analyse des temps d'exécutions}
+\subsection{Analyse de l'espace utilisé}
 \end{document}

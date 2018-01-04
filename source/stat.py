@@ -74,7 +74,7 @@ def printStats(name, objets, exec_time, percent, bin_number, result):
 
 def main():
     functions = [next_fit, first_fit, worst_fit, worst_fit_log, almost_worst_fit, best_fit]
-    example = input("Fichier d'exemple : ")
+    example = input("Fichier/dossier d'exemple (optionnel):")
     if example == "":
         # if no example is given doRandomTests
         bin_size = int(input("Taille bin : "))

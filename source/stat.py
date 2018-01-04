@@ -46,7 +46,7 @@ def printStats(name, objets, exec_time, percent, bin_number, result):
     print("Objets générés : " + str(objets))
 
     exec_time = round(exec_time, 6)
-    print("Temps d'éxéctution", exec_time)
+    print("Temps d'exécution", exec_time, "s")
     print("Résultat : " + str(result))
     print("Nombre de boites", bin_number)
     print("Pourcentage de remplissage des boites", percent, "%\n")

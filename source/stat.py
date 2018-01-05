@@ -5,7 +5,7 @@ from os import listdir
 from os.path import isfile, join, isdir
 from random import randint
 
-from source.algo import *
+from algo import *
 
 csv_path = "res.csv"
 names = ["execution time", "packing percent", "bin number"]

@@ -33,8 +33,10 @@ def next_fit(inputs):
 
 
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
-# Complexity : Worst case -> when the item to place is lighter than the previous one, we are starting to iterate from index 0 => O(n^2)
-# Complexity : Best case -> when the item to place is weighter (or equal) than the previous one, we are starting to iterate from the previous index 0 => O(???)
+# Complexity : Worst case -> when the item to place is lighter than the previous one, we are starting to iterate
+# from index 0 => O(n^2)
+# Complexity : Best case -> when the item to place is weighter (or equal) than the previous one, we are starting
+# to iterate from the previous index 0 => O(???)
 def first_fit_enhanced(inputs):
     bins = [0] * len(inputs[1])
     index = 0

@@ -52,3 +52,8 @@ fabric.properties
 source/__pycache__/
 .idea/
 res.csv
+doc/rapport.aux
+doc/rapport.log
+doc/rapport.pdf
+doc/rapport.synctex.gz
+doc/rapport.toc

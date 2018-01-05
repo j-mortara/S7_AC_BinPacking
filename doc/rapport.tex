@@ -24,7 +24,6 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass{article}
-
 \usepackage{fancyhdr} % Required for custom headers
 \usepackage{lastpage} % Required to determine the last page for the footer
 \usepackage{extramarks} % Required for headers and footers
@@ -34,6 +33,7 @@
 \usepackage{courier} % Required for the courier font
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 \usepackage[french]{babel}
+\usepackage[T1]{fontenc}
 
 % Margins
 \topmargin=-0.45in
@@ -135,46 +135,12 @@
 \newpage
 
 %----------------------------------------------------------------------------------------
-%	Next Fit
-%----------------------------------------------------------------------------------------
-
-% To have just one problem per page, simply put a \clearpage after each problem
-
-\section{Next Fit}
-
-\subsection{Description théorique de l'algorithme}
-
-\subsection{Implémentation de l'algorithme}
-\begin{lstlisting}[language=Python, frame=single]
-def next_fit(inputs):
-    # For n values to store, the maximum number of bins is n,
-    # so we directly create a list of n bins to avoid appending items
-    bins = [0] * len(inputs[1])  # Array of maximum size: number of items
-    index = 0  # iterator
-    for item in inputs[1]:  # for each item
-        # if the capacity for the current bin is not enough for this item
-        if item + bins[index] > inputs[0]:
-            index += 1  # get a new bin
-        bins[index] += item  # add the new item
-    # We keep the bins containing items by filtering the bins list, 
-    # then we return the length of this filtered list.
-    
-    # used to remove all unused (=empty) bins
-    opened_bins = list(filter(lambda x: x > 0, bins))
-    print(len(opened_bins))
-    return opened_bins
-\end{lstlisting}
-
-\subsection{Explication et remarques à propos de l'implémentation}
-
-\lipsum[1]
-
-%----------------------------------------------------------------------------------------
 %	First Fit
 %----------------------------------------------------------------------------------------
 
 \section{First Fit}
 \subsection{Description théorique de l'algorithme}
+L'algorithme First Fit a pour principe de rechercher la première boîte pouvant contenir l'item courant en commençant par la plus ancienne, si aucune boîte ne peut contenir l'item, on en ouvre une nouvelle.
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
@@ -207,6 +173,42 @@ def first_fit(inputs):
 \lipsum[1]
 
 %----------------------------------------------------------------------------------------
+%	Next Fit
+%----------------------------------------------------------------------------------------
+
+% To have just one problem per page, simply put a \clearpage after each problem
+
+\section{Next Fit}
+
+\subsection{Description théorique de l'algorithme}
+L'algorithme Next Fit est très similaire à First Fit, la seule différence se fait lors de la recherche d'une boîte qui pourrait contenir l'item courrant, l'itération se fait à partir de la dernière boîte utilisé au lieu de la première.
+
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def next_fit(inputs):
+    # For n values to store, the maximum number of bins is n,
+    # so we directly create a list of n bins to avoid appending items
+    bins = [0] * len(inputs[1])  # Array of maximum size: number of items
+    index = 0  # iterator
+    for item in inputs[1]:  # for each item
+        # if the capacity for the current bin is not enough for this item
+        if item + bins[index] > inputs[0]:
+            index += 1  # get a new bin
+        bins[index] += item  # add the new item
+    # We keep the bins containing items by filtering the bins list, 
+    # then we return the length of this filtered list.
+    
+    # used to remove all unused (=empty) bins
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    print(len(opened_bins))
+    return opened_bins
+\end{lstlisting}
+
+\subsection{Explication et remarques à propos de l'implémentation}
+
+\lipsum[1]
+
+%----------------------------------------------------------------------------------------
 %	Worst Fit
 %----------------------------------------------------------------------------------------
 
@@ -215,6 +217,7 @@ def first_fit(inputs):
 \section{Worst Fit}
 
 \subsection{Description théorique de l'algorithme}
+L'algorithme Worst Fit se base sur la recherche de la boîte ayant la plus grande capacité disponible.
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
@@ -257,6 +260,7 @@ def worst_fit(inputs):
 \section{Almost Worst Fit}
 
 \subsection{Description théorique de l'algorithme}
+Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la seconde boîte avec le plus d'espace disponible.
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
@@ -318,6 +322,7 @@ def worst_fit(inputs):
 
 \section{Best Fit}
 \subsection{Description théorique de l'algorithme}
+Best Fit s'appuie sur la recherche de la boîte avec le plus petit espace suffisant pour l'item courant.
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]

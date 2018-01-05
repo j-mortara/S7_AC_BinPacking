@@ -32,6 +32,19 @@ def next_fit(inputs):
     return opened_bins
 
 
+def first_fit(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    
+    for item in inputs[1]:  # for each items to pack
+        j = index
+        while item + bins[j] > inputs[0] :
+            j += 1
+        bins[j] += item
+       
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
 # Complexity : Worst case -> when the item to place is lighter than the previous one, we are starting to iterate
 # from index 0 => O(n^2)
@@ -60,29 +73,6 @@ def first_fit_enhanced(inputs):
 
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
-
-
-def first_fit(inputs):
-    bins = [0] * len(inputs[1])  # Bin initialization
-    index = 0  # iterator items
-    for item in inputs[1]:  # for each items to pack
-        # if the bin cannot contain the item
-        if item + bins[index] > inputs[0]:
-            j = 0
-            # we browse the bins until we find one that can contain the item
-            while item + bins[j] > inputs[0] and j < index:
-                j += 1
-            # if, arrived at current index, no bin can contain the item, we add one
-            if j == index and item + bins[j] > inputs[0]:
-                index += 1
-                j = index
-            bins[j] += item
-        # if the bin can contain the item, we add it in the bin
-        else:
-            bins[index] += item
-    opened_bins = list(filter(lambda x: x > 0, bins))
-    return opened_bins
-
 
 # 1. Put each item into the emptiest bin among those with something in them.
 # Only start a new bin if the item doesn't fit into any bin that's already been started.

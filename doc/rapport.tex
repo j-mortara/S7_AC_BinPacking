@@ -134,6 +134,33 @@
 \tableofcontents
 \newpage
 
+\section{Préambule}
+Nous prenons pour postulat que les objets proposés à l'algorithme sont de taille inférieure ou égale à celle d'une boite car dans le contraire, le problème n'aurait pas
+de solutions.
+
+Dans les sections suivantes vous trouverez les implémentations des algorithmes en \textit{python 3} sour la forme de fonctions respectant cette disposition :
+
+\begin{lstlisting}[language=Python, frame=single]
+def nomDeLalgorithme(inputs) :
+    # Initialisation des boites vides (autant de boites que d'objets)
+    bins = [0] * len(inputs[1])
+    # Initialisation d'un index correspondant à un itérateur sur les objets
+    index = 0
+
+    ALGORITHME
+
+    # Filtrage sur l'ensemble des boites pour ne garder que les boites utilisées
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    # Retour des boites utilisés
+    return opened_bins
+\end{lstlisting}
+
+Le paramètre \textit{inputs} correspond à un tableau :
+    \begin{itemize}
+        \item inputs[0] :  Taille maximale d'une boite
+        \item inputs[1] :  Tableau contenant l'ensemble des objets à ranger
+    \end{itemize}
+
 %----------------------------------------------------------------------------------------
 %	First Fit
 %----------------------------------------------------------------------------------------
@@ -146,23 +173,15 @@ Complexité en $O(n^2)$
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
 def first_fit(inputs):
-    bins = [0] * len(inputs[1])  # Bin initialization
-    index = 0  # iterator items
+    bins = [0] * len(inputs[1])
+    index = 0
+    
     for item in inputs[1]:  # for each items to pack
-        # if the bin cannot contain the item
-        if item + bins[index] > inputs[0]:
-            j = 0
-            # we browse the bins until we find one that can contain the item
-            while item + bins[j] > inputs[0] and j < index:
-                j += 1
-            # if, arrived at current index, no bin can contain the item, we add one
-            if j == index and item + bins[j] > inputs[0]:
-                index += 1
-                j = index
-            bins[j] += item
-        # if the bin can contain the item, we add it in the bin
-        else:
-            bins[index] += item
+        j = index
+        while item + bins[j] > inputs[0] :
+            j += 1
+        bins[j] += item
+       
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
 \end{lstlisting}
@@ -179,13 +198,12 @@ def first_fit(inputs):
 \end{itemize}
 
 \subsection{Optimisation de l'algorithme}
-Notre implémentation du first fit reprend la description donnée précédemment
-tout en y ajoutant une subtilité en s'inspirant de l'algorithme Next Fit. Lors que nous plaçons un objet de taille t dans une boite
-d'index i, nous gardons en mémoire ces deux informations. Lorsque nous débutons l'itération
-sur l'objet suivant, si la taille de cet objet est supérieure ou égale à la taille de l'objet placé précédemment, nous ne repartons pas
-de l'index 0 mais de l'index où l'objet a été placé (puisque les boites les plus anciennes ne pouvaient déjà plus contenir cet objet
+Notre implémentation du first fit reprend la description donnée précédemment cependant en ajoutant une subtilité en s'inspirant de l'algorithme Next Fit, il est possible d'en réduire la complexité.
+Lors que nous plaçons un objet de taille t dans une boite d'index i, il suffit de garder en mémoire ces deux informations.
+Lorsque du placement de l'objet suivant, si la taille de cet objet est supérieure ou égale à la taille de l'objet placé précédemment,
+il est inutile de repartir de l'index 0, il est plus intéressant de repartir de l'index où l'objet précédent a été placé (puisque les boites les plus anciennes ne pouvaient déjà plus contenir cet objet 
 de taille inférieure ou égale).
-Lors de la toute première itération (premier objet à placer), nous considérons un objet de taille infinie.
+Dans cette version de l'algorithme lors de la toute première itération (premier objet à placer), nous considérons un objet de taille infinie.
 
 \begin{lstlisting}[language=Python, frame=single]
 def first_fit_enhanced(inputs):
@@ -245,10 +263,6 @@ def next_fit(inputs):
     print(len(opened_bins))
     return opened_bins
 \end{lstlisting}
-
-\subsection{Explication et remarques à propos de l'implémentation}
-
-\lipsum[1]
 
 %----------------------------------------------------------------------------------------
 %	Worst Fit

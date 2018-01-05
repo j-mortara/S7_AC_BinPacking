@@ -78,9 +78,10 @@ def main():
     if example == "":
         # if no example is given doRandomTests
         bin_size = int(input("Taille bin : "))
+        numbers_object = list(map(int, input("nombre d'objets : ").split(" ")))
         valeur_min = int(input("Valeur minimale d'un objet : "))
         valeur_max = int(input("Valeur maximale d'un objet : "))
-        doRandomTests(functions, bin_size, valeur_max, valeur_min)
+        doRandomTests(functions, bin_size, valeur_max, valeur_min, numbers_object)
     else:
         # if example is a directory then execute every examples in the directory
         if isdir(example):
@@ -100,9 +101,10 @@ def main():
                 writeToCSVFile(file, [""], every_stats)
 
 
-def doRandomTests(functions, bin_size, max_value, min_value):
+def doRandomTests(functions, bin_size, max_value, min_value, numbers_object):
     """
     Generates random lists of objects of different sizes and executes functions on them
+    :param numbers_object: a list of numbers that represent the size of the object list
     :param functions: a list of functions to execute
     :param bin_size: size of the bin
     :param max_value: maximum value of an object
@@ -110,12 +112,11 @@ def doRandomTests(functions, bin_size, max_value, min_value):
     :return:
     """
     every_stats = {f.__name__: [] for f in functions}
-    nbs_objects = [100, 200, 500, 1000]
-    for nb in nbs_objects:
+    for nb in numbers_object:
         objects = [randint(min_value, max_value) for _ in range(nb)]
         execFunctions(every_stats, functions, objects, bin_size)
     with open(csv_path, "w") as file:
-        writeToCSVFile(file, nbs_objects, every_stats)
+        writeToCSVFile(file, numbers_object, every_stats)
 
 
 def execFunctions(every_stats, functions, objects, bin_size):

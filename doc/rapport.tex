@@ -65,33 +65,33 @@
 \definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0} % This is the color used for comments
 \lstloadlanguages{Python} % Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
 \lstset{language=Python, % Use Perl in this example
-frame=single, % Single frame around code
-basicstyle=\small\ttfamily, % Use small true type font
-keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
-keywordstyle=[2]\color{Purple}, % Perl function arguments purple
-keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
-identifierstyle=, % Nothing special about identifiers
-commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
-stringstyle=\color{Purple}, % Strings are purple
-showstringspaces=false, % Don't put marks in string spaces
-tabsize=5, % 5 spaces per tab
-%
-% Put standard Perl functions not included in the default language here
-morekeywords={rand},
-%
-% Put Perl function parameters here
-morekeywords=[2]{on, off, interp},
-%
-% Put user defined functions here
-morekeywords=[3]{test},
-%
-morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
-numbers=left, % Line numbers on left
-firstnumber=1, % Line numbers start with line 1
-numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
-stepnumber=5, % Line numbers go in steps of 5
-columns=fullflexible,
-keepspaces=true,
+        frame=single, % Single frame around code
+        basicstyle=\small\ttfamily, % Use small true type font
+        keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
+        keywordstyle=[2]\color{Purple}, % Perl function arguments purple
+        keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
+        identifierstyle=, % Nothing special about identifiers
+        commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
+        stringstyle=\color{Purple}, % Strings are purple
+        showstringspaces=false, % Don't put marks in string spaces
+        tabsize=5, % 5 spaces per tab
+        %
+        % Put standard Perl functions not included in the default language here
+        morekeywords={rand},
+        %
+        % Put Perl function parameters here
+        morekeywords=[2]{on, off, interp},
+        %
+        % Put user defined functions here
+        morekeywords=[3]{test},
+       	%
+        morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
+        numbers=left, % Line numbers on left
+        firstnumber=1, % Line numbers start with line 1
+        numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
+        stepnumber=5, % Line numbers go in steps of 5
+        columns=fullflexible,
+        keepspaces=true,
 }
 
 %----------------------------------------------------------------------------------------
@@ -121,160 +121,197 @@ keepspaces=true,
 
 \begin{document}
 
-    \maketitle
+\maketitle
 
-    %----------------------------------------------------------------------------------------
-    %	TABLE OF CONTENTS
-    %----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
 
-    %\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+%\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
 
-    \newpage
-    \selectlanguage{french}
-    \tableofcontents
-    \newpage
+\newpage
+\selectlanguage{french}
+\tableofcontents
+\newpage
 
-    %----------------------------------------------------------------------------------------
-    %	First Fit
-    %----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	First Fit
+%----------------------------------------------------------------------------------------
 
-    \section{First Fit}
-    \subsection{Description théorique de l'algorithme}
-    L'algorithme First Fit a pour principe de rechercher la première boîte pouvant contenir l'item courant en commençant par la plus ancienne, si aucune boîte ne peut contenir l'item, on en ouvre une nouvelle.
+\section{First Fit}
+\subsection{Description théorique de l'algorithme}
+L'algorithme First Fit a pour principe de rechercher la première boîte pouvant contenir l'item courant en commençant par la plus ancienne, si aucune boîte ne peut contenir l'item, on en ouvre une nouvelle.
+Complexité en $O(n^2)$
 
-    \subsection{Implémentation de l'algorithme}
-    \begin{lstlisting}[language=Python, frame=single]
-        def first_fit(inputs):
-        bins = [0] * len(inputs[1])  # Bin initialization
-        index = 0 # iterator items
-        for item in inputs[1]: # for each items to pack
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def first_fit(inputs):
+    bins = [0] * len(inputs[1])  # Bin initialization
+    index = 0  # iterator items
+    for item in inputs[1]:  # for each items to pack
         # if the bin cannot contain the item
         if item + bins[index] > inputs[0]:
-        j = 0
-        # we browse the bins until we find one that can contain the item
-        while item + bins[j] > inputs[0] and j < index:
-        j += 1
-        # if, arrived at current index, no bin can contain the item, we add one
-        if j == index and item + bins[j] > inputs[0]:
-        index += 1
-        j = index
-        bins[j] += item
+            j = 0
+            # we browse the bins until we find one that can contain the item
+            while item + bins[j] > inputs[0] and j < index:
+                j += 1
+            # if, arrived at current index, no bin can contain the item, we add one
+            if j == index and item + bins[j] > inputs[0]:
+                index += 1
+                j = index
+            bins[j] += item
         # if the bin can contain the item, we add it in the bin
         else:
-        bins[index] += item
-        opened_bins = list(filter(lambda x: x > 0, bins))
-        return opened_bins
-    \end{lstlisting}
+            bins[index] += item
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
 
-    \subsection{Explication et remarques à propos de l'implémentation}
-    Notre implémentation du first fit reprend la description donnée précédemment
-    tout en y ajoutant une subtilité en s'inspirant de l'algorithme Next Fit. Lors que nous plaçons un objet de taille t dans une boite
-    d'index i, nous gardons en mémoire ces deux informations. Lorsque nous débutons l'itération
-    sur l'objet suivant, si la taille de cet objet est supérieure ou égale à la taille de l'objet placé précédemment, nous ne repartons pas
-    de l'index 0 mais de l'index où l'objet a été placé (puisque les boites les plus anciennes ne pouvaient déjà plus contenir cet objet
-    de taille inférieure ou égale).
+\subsection{Explication et remarques à propos de l'implémentation}
+\begin{itemize}
+  \item Cet algorithme a pour avantage d'avoir théoriquement la recherche la plus rapide étant donné qu'il recherche la première boîte susceptible de contenir l'item courant.
+  \item Si on considère que notre nombre de boîtes n'est pas illimité on pourrait avoir des items non alloués dans certains exemples, par exemple:
+  \begin{itemize}
+  \item 5 boîtes de capacité 100, 500, 200, 300, 600
+  \item 4 items de poids 212, 417, 112, 426
+  \end{itemize}
+  Avec l'algorithme First Fit, l'item de capacité 212 serait affecté à la boîte de capacité 500, l'item 417 à la boîte 600, l'item 112 à la boîte 500 et l'item 426 ne serait pas alloué. Alors qu'avec un autre algorithme, Best Fit notamment, l'affectation reste possible avec ces 5 boîtes.
+\end{itemize}
 
-    Lors de la toute première itération (premier objet à placer), nous considérons un objet de taille infinie.
+\subsection{Optimisation de l'algorithme}
+Notre implémentation du first fit reprend la description donnée précédemment
+tout en y ajoutant une subtilité en s'inspirant de l'algorithme Next Fit. Lors que nous plaçons un objet de taille t dans une boite
+d'index i, nous gardons en mémoire ces deux informations. Lorsque nous débutons l'itération
+sur l'objet suivant, si la taille de cet objet est supérieure ou égale à la taille de l'objet placé précédemment, nous ne repartons pas
+de l'index 0 mais de l'index où l'objet a été placé (puisque les boites les plus anciennes ne pouvaient déjà plus contenir cet objet
+de taille inférieure ou égale).
+Lors de la toute première itération (premier objet à placer), nous considérons un objet de taille infinie.
 
-    %----------------------------------------------------------------------------------------
-    %	Next Fit
-    %----------------------------------------------------------------------------------------
+\begin{lstlisting}[language=Python, frame=single]
+def first_fit_enhanced(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    # For the first iteration we are considering the previous item as an infinite weighted item.
+    previousItem = float('inf')
+    previousIndex = -1
+    for item in inputs[1]:
+        # If the next item is lighter than the previous one, iterate from 0
+        if item < previousItem:
+            iterator = 0
+        # Else we are starting to iterate from the last bin used (the bins before are too full to be used).
+        else:
+            iterator = previousIndex
+        # We are iterating to a bin used
+        while item + bins[iterator] > inputs[0]:
+            iterator += 1
+        # Store the item, save its weight and the bin index used.
+        bins[iterator] += item
+        previousItem = item
+        previousIndex = iterator
 
-    % To have just one problem per page, simply put a \clearpage after each problem
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
 
-    \section{Next Fit}
+%----------------------------------------------------------------------------------------
+%	Next Fit
+%----------------------------------------------------------------------------------------
 
-    \subsection{Description théorique de l'algorithme}
-    L'algorithme Next Fit est très similaire à First Fit, la seule différence se fait lors de la recherche d'une boîte qui pourrait contenir l'item courant, l'itération se fait à partir de la dernière boîte utilisé au lieu de la première.
+% To have just one problem per page, simply put a \clearpage after each problem
 
-    \subsection{Implémentation de l'algorithme}
-    \begin{lstlisting}[language=Python, frame=single]
-        def next_fit(inputs):
-        # For n values to store, the maximum number of bins is n,
-        # so we directly create a list of n bins to avoid appending items
-        bins = [0] * len(inputs[1])  # Array of maximum size: number of items
-        index = 0 # iterator
-        for item in inputs[1]: # for each item
+\section{Next Fit}
+
+\subsection{Description théorique de l'algorithme}
+L'algorithme Next Fit est très simple, tant que les items peuvent être alloués à la boîte courante, ils sont alloués sinon on passe à la boîte suivante.
+Complexité en $O(n)$
+
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def next_fit(inputs):
+    # For n values to store, the maximum number of bins is n,
+    # so we directly create a list of n bins to avoid appending items
+    bins = [0] * len(inputs[1])  # Array of maximum size: number of items
+    index = 0  # iterator
+    for item in inputs[1]:  # for each item
         # if the capacity for the current bin is not enough for this item
         if item + bins[index] > inputs[0]:
-        index += 1 # get a new bin
-        bins[index] += item # add the new item
-        # We keep the bins containing items by filtering the bins list,
-        # then we return the length of this filtered list.
+            index += 1  # get a new bin
+        bins[index] += item  # add the new item
+    # We keep the bins containing items by filtering the bins list,
+    # then we return the length of this filtered list.
 
-        # used to remove all unused (=empty) bins
-        opened_bins = list(filter(lambda x: x > 0, bins))
-        print(len(opened_bins))
-        return opened_bins
-    \end{lstlisting}
+    # used to remove all unused (=empty) bins
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    print(len(opened_bins))
+    return opened_bins
+\end{lstlisting}
 
-    \subsection{Explication et remarques à propos de l'implémentation}
+\subsection{Explication et remarques à propos de l'implémentation}
 
-    \lipsum[1]
+\lipsum[1]
 
-    %----------------------------------------------------------------------------------------
-    %	Worst Fit
-    %----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	Worst Fit
+%----------------------------------------------------------------------------------------
 
-    % To have just one problem per page, simply put a \clearpage after each problem
+% To have just one problem per page, simply put a \clearpage after each problem
 
-    \section{Worst Fit}
+\section{Worst Fit}
 
-    \subsection{Description théorique de l'algorithme}
-    L'algorithme Worst Fit se base sur la recherche de la boîte ayant la plus grande capacité disponible.
-    On met les objets dans la boite moins remplie parmis les boites déjà ouvertes.
-    On ouvre une nouvelle boites seulement si aucune des boites ouvertes précédement ne peut contenir l'objet.
-    Si plusieurs boites ont une capacité égale on met l'objet dans la boite ouverte en premier.
+\subsection{Description théorique de l'algorithme}
+L'algorithme Worst Fit se base sur la recherche de la boîte ayant la plus grande capacité disponible.
+On met les objets dans la boite moins remplie parmis les boites déjà ouvertes.
+On ouvre une nouvelle boites seulement si aucune des boites ouvertes précédement ne peut contenir l'objet.
+Si plusieurs boites ont une capacité égale on met l'objet dans la boite ouverte en premier.
+Complexité en $O(n^2)$
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def worst_fit(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    for item in inputs[1]:
+        j = index
+        min_index = j
+        min_val = inputs[0]
+        # we browse the opened bins to find the emptiest one
+        while j >= 0:
+            # the possible equality with min_val guarantees that the earliest
+            # opened bin will be picked in case of tie, as we browse the bins
+            # from the latest opened one to the earliest opened one
+            if bins[j] <= min_val:
+                min_val = bins[j]
+                min_index = j
+            j -= 1
+        # if the emptiest bin cannot contain the item, we create one
+        if item + bins[min_index] > inputs[0]:
+            index += 1
+            bins[index] += item
+        # if the emptiest bin can contain the item, we add it in the bin
+        else:
+            bins[min_index] += item
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
 
-    \subsection{Implémentation de l'algorithme}
-    \begin{lstlisting}[language=Python, frame=single]
-    def worst_fit(inputs):
-        bins = [0] * len(inputs[1])
-        index = 0
-        for item in inputs[1]:
-            j = index
-            min_index = j
-            min_val = inputs[0]
-            # we browse the opened bins to find the emptiest one
-            while j >= 0:
-                # the possible equality with min_val guarantees that
-                # the earliest opened bin will be picked in case of tie,
-                # as we browse the bins from the latest opened one
-                # to the earliest opened one
-                if bins[j] <= min_val:
-                    min_val = bins[j]
-                    min_index = j
-                j -= 1
-            # if the emptiest bin cannot contain the item, we create one
-            if item + bins[min_index] > inputs[0]:
-                index += 1
-                bins[index] += item
-            # if the emptiest bin can contain the item, we add it in the bin
-            else:
-                bins[min_index] += item
-        opened_bins = list(filter(lambda x: x > 0, bins))
-        return opened_bins
-    \end{lstlisting}
-    Notre implémentation de l'algorithme worst fit stocke l'index de la boite la moins remplie
-
-    \subsection{Explication et remarques à propos de l'implémentation}
+\subsection{Explication et remarques à propos de l'implémentation}
 
 
-    %----------------------------------------------------------------------------------------
-    %	Almost Worst Fit
-    %----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	Almost Worst Fit
+%----------------------------------------------------------------------------------------
 
-    % To have just one problem per page, simply put a \clearpage after each problem
+% To have just one problem per page, simply put a \clearpage after each problem
 
-    \section{Almost Worst Fit}
+\section{Almost Worst Fit}
 
-    \subsection{Description théorique de l'algorithme}
-    Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte avec la seconde plus grande capacité disponible.
-    \subsection{Implémentation de l'algorithme}
-    \begin{lstlisting}[language=Python, frame=single]
-        bins = [0] * len(inputs[1])
-        index = 0
-        for item in inputs[1]:
+\subsection{Description théorique de l'algorithme}
+Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte avec la seconde plus grande capacité disponible.
+
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+    bins = [0] * len(inputs[1])
+    index = 0
+    for item in inputs[1]:
         j = index
         min_index = j
         min_val = inputs[0]
@@ -282,19 +319,19 @@ keepspaces=true,
         first_loop = True
         # we browse the opened bins to find the emptiest one
         while j >= 0:
-        # the possible equality with min_val guarantees that the earliest
-        # opened bin will be picked in case of tie, as we browse the bins
-        # from the latest opened one to the earliest opened one
-        if bins[j] <= min_val:
-        # if the current bin is the first valid one encountered,
-        # we don't set the second emptiest bin index
-        if first_loop:
-        first_loop = False
-        else:
-        second_min_index = min_index
-        min_index = j
-        min_val = bins[j]
-        j -= 1
+            # the possible equality with min_val guarantees that the earliest
+            # opened bin will be picked in case of tie, as we browse the bins
+            # from the latest opened one to the earliest opened one
+            if bins[j] <= min_val:
+                # if the current bin is the first valid one encountered,
+                # we don't set the second emptiest bin index
+                if first_loop:
+                    first_loop = False
+                else:
+                    second_min_index = min_index
+                min_index = j
+                min_val = bins[j]
+            j -= 1
         # we set the emptiest bin index to the second emptiest bin index if it exists
         # What if the second-emptiest one exists but cannot contain item ?
 
@@ -302,56 +339,57 @@ keepspaces=true,
         # Here, the next if condition will check if the second_min_index can contain
         # the item. Supposing it cannot, another bin will be opened.
         # if second_min_index is not None:
-        # min_index = second_min_index
+        #     min_index = second_min_index
 
         # Case : check if the second emptiest one can contain the item,
         # and take this one if it is the case.
         # Otherwise, keep the emptiest one.
         if second_min_index is not None and item + bins[second_min_index] < inputs[0]:
-        min_index = second_min_index
+            min_index = second_min_index
 
         # if the bin cannot contain the item, we create one
         if item + bins[min_index] > inputs[0]:
-        index += 1
-        bins[index] += item
+            index += 1
+            bins[index] += item
         # if the bin can contain the item, we add it in the bin
         else:
-        bins[min_index] += item
-        opened_bins = list(filter(lambda x: x > 0, bins))
-        return opened_bins
-    \end{lstlisting}
+            bins[min_index] += item
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
 
-    \subsection{Explication et remarques à propos de l'implémentation}
+\subsection{Explication et remarques à propos de l'implémentation}
 
 
-    %----------------------------------------------------------------------------------------
-    %	Best Fit
-    %----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	Best Fit
+%----------------------------------------------------------------------------------------
 
-    % To have just one problem per page, simply put a \clearpage after each problem
+% To have just one problem per page, simply put a \clearpage after each problem
 
-    \section{Best Fit}
-    \subsection{Description théorique de l'algorithme}
-    L'algorithme Best Fit s'appuie sur la recherche de la boîte avec la plus petite capacité disponible suffisante pour l'item courant.
+\section{Best Fit}
+\subsection{Description théorique de l'algorithme}
+L'algorithme Best Fit s'appuie sur la recherche de la boîte avec la plus petite capacité disponible suffisante pour l'item courant.
+Complexité en $O(n^2)$
 
-    \subsection{Implémentation de l'algorithme}
-    \begin{lstlisting}[language=Python, frame=single]
-        def best_fit(inputs):
-        bins = [0] * len(inputs[1])
-        index = 0
-        for item in inputs[1]:
+\subsection{Implémentation de l'algorithme}
+\begin{lstlisting}[language=Python, frame=single]
+def best_fit(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    for item in inputs[1]:
         j = index
         max_index = j
         max_val = 0
         # we browse the opened bins to find the adequate bin
         while j >= 0:
-        # if the bin is fullest than the previous valid one
-        # but can still contain the item,
-        # it becomes the new valid one
-        if max_val < bins[j] <= inputs[0] - item:
-        max_val = bins[j]
-        max_index = j
-        j -= 1
+            # if the bin is fullest than the previous valid one
+            # but can still contain the item,
+            # it becomes the new valid one
+            if max_val < bins[j] <= inputs[0] - item:
+                max_val = bins[j]
+                max_index = j
+            j -= 1
         # If we enter this condition, this means that the bin at index max_index cannot
         # contain the item.
         # In order to enter this condition, max_index must be equal to 0.
@@ -361,23 +399,23 @@ keepspaces=true,
         # Therefore, we know by entering this condition that no bin can contain
         # the item, so we open a new one.
         if item + bins[max_index] > inputs[0]:
-        index += 1
-        bins[index] += item
+            index += 1
+            bins[index] += item
         else:
-        # we add the item in the bin
-        bins[max_index] += item
-        opened_bins = list(filter(lambda x: x > 0, bins))
-        return opened_bins
-    \end{lstlisting}
+            # we add the item in the bin
+            bins[max_index] += item
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
 
-    \subsection{Explication et remarques à propos de l'implémentation}
+\subsection{Explication et remarques à propos de l'implémentation}
 
-    %----------------------------------------------------------------------------------------
-    %	Statistiques
-    %----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	Statistiques
+%----------------------------------------------------------------------------------------
 
-    \section{Analyse et comparaison des algorithmes}
-    \subsection{Exemples proposés}
-    \subsection{Analyse des temps d'exécutions}
-    \subsection{Analyse de l'espace utilisé}
+\section{Analyse et comparaison des algorithmes}
+\subsection{Exemples proposés}
+\subsection{Analyse des temps d'exécutions}
+\subsection{Analyse de l'espace utilisé}
 \end{document}

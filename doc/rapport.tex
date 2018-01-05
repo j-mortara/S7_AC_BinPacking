@@ -147,14 +147,16 @@ L'algorithme First Fit a pour principe de rechercher la première boîte pouvant
 def first_fit(inputs):
     bins = [0] * len(inputs[1])
     index = 0
-    # For the first iteration we are considering the previous item as an infinite weighted item.
+    # For the first iteration we are considering the previous item
+    # as an infinite weighted item.
     previousItem = float('inf')
     previousIndex = -1
     for item in inputs[1]:
         # If the next item is lighter than the previous one, iterate from 0
         if item < previousItem:
             iterator = 0
-        # Else we are starting to iterate from the last bin used (the bins before are too full to be used).
+        # Else we are starting to iterate from the last bin used
+        # (the bins before are too full to be used).
         else:
             iterator = previousIndex
         # We are iterating to a bin usa
@@ -170,7 +172,14 @@ def first_fit(inputs):
 \end{lstlisting}
 
 \subsection{Explication et remarques à propos de l'implémentation}
-\lipsum[1]
+Notre implémentation du first fit reprend la description donnée précédemment 
+tout en y ajoutant une subtilité en s'inspirant de l'algorithme Next Fit. Lors que nous plaçons un objet de taille t dans une boite
+d'index i, nous gardons en mémoire ces deux informations. Lorsque nous débutons l'itération 
+sur l'objet suivant, si la taille de cet objet est supérieure ou égale à la taille de l'objet placé précédemment, nous ne repartons pas
+de l'index 0 mais de l'index où l'objet a été placé (puisque les boites les plus anciennes ne pouvaient déjà plus contenir cet objet 
+de taille inférieure ou égale).
+
+Lors de la toute première itération (premier objet à placer), nous considérons un objet de taille infinie.
 
 %----------------------------------------------------------------------------------------
 %	Next Fit
@@ -181,7 +190,7 @@ def first_fit(inputs):
 \section{Next Fit}
 
 \subsection{Description théorique de l'algorithme}
-L'algorithme Next Fit est très similaire à First Fit, la seule différence se fait lors de la recherche d'une boîte qui pourrait contenir l'item courrant, l'itération se fait à partir de la dernière boîte utilisé au lieu de la première.
+L'algorithme Next Fit est très similaire à First Fit, la seule différence se fait lors de la recherche d'une boîte qui pourrait contenir l'item courant, l'itération se fait à partir de la dernière boîte utilisé au lieu de la première.
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
@@ -230,8 +239,9 @@ def worst_fit(inputs):
         min_val = inputs[0]
         # we browse the opened bins to find the emptiest one
         while j >= 0:
-            # the possible equality with min_val guarantees that the earliest opened bin will be picked in case of tie,
-            # as we browse the bins from the latest opened one to the earliest opened one
+            # the possible equality with min_val guarantees that the earliest
+            # opened bin will be picked in case of tie, as we browse the bins
+            # from the latest opened one to the earliest opened one
             if bins[j] <= min_val:
                 min_val = bins[j]
                 min_index = j
@@ -248,7 +258,6 @@ def worst_fit(inputs):
 \end{lstlisting}
 
 \subsection{Explication et remarques à propos de l'implémentation}
-\lipsum[1]
 
 
 %----------------------------------------------------------------------------------------
@@ -274,10 +283,12 @@ Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la seconde
         first_loop = True
         # we browse the opened bins to find the emptiest one
         while j >= 0:
-            # the possible equality with min_val guarantees that the earliest opened bin will be picked in case of tie,
-            # as we browse the bins from the latest opened one to the earliest opened one
+            # the possible equality with min_val guarantees that the earliest 
+            # opened bin will be picked in case of tie, as we browse the bins
+            # from the latest opened one to the earliest opened one
             if bins[j] <= min_val:
-                # if the current bin is the first valid one encountered, we don't set the second emptiest bin index
+                # if the current bin is the first valid one encountered,
+                # we don't set the second emptiest bin index
                 if first_loop:
                     first_loop = False
                 else:
@@ -289,12 +300,13 @@ Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la seconde
         # What if the second-emptiest one exists but cannot contain item ?
 
         # Case : create another
-        # Here, the next if condition will check if the second_min_index can contain the item.
-        # Supposing it cannot, another bin will be opened.
+        # Here, the next if condition will check if the second_min_index can contain
+        # the item. Supposing it cannot, another bin will be opened.
         # if second_min_index is not None:
         #     min_index = second_min_index
 
-        # Case : check if the second emptiest one can contain the item, and take this one if it is the case.
+        # Case : check if the second emptiest one can contain the item,
+        # and take this one if it is the case.
         # Otherwise, keep the emptiest one.
         if second_min_index is not None and item + bins[second_min_index] < inputs[0]:
             min_index = second_min_index
@@ -311,7 +323,6 @@ Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la seconde
 \end{lstlisting}
 
 \subsection{Explication et remarques à propos de l'implémentation}
-\lipsum[1]
 
 
 %----------------------------------------------------------------------------------------
@@ -335,17 +346,21 @@ def best_fit(inputs):
         max_val = 0
         # we browse the opened bins to find the adequate bin
         while j >= 0:
-            # if the bin is fullest than the previous valid one but can still contain the item,
+            # if the bin is fullest than the previous valid one
+            # but can still contain the item,
             # it becomes the new valid one
             if max_val < bins[j] <= inputs[0] - item:
                 max_val = bins[j]
                 max_index = j
             j -= 1
-        # If we enter this condition, this means that the bin at index max_index cannot contain the item.
+        # If we enter this condition, this means that the bin at index max_index cannot
+        # contain the item.
         # In order to enter this condition, max_index must be equal to 0.
-        # Indeed, having max_index != 0 implies that we entered the precedent if condition at least once,
+        # Indeed, having max_index != 0 implies that we entered the precedent if
+        # condition at least once,
         # meaning that the bin at index max_index can contain the item.
-        # Therefore, we know by entering this condition that no bin can contain the item, so we open a new one.
+        # Therefore, we know by entering this condition that no bin can contain
+        # the item, so we open a new one.
         if item + bins[max_index] > inputs[0]:
             index += 1
             bins[index] += item
@@ -357,7 +372,6 @@ def best_fit(inputs):
 \end{lstlisting}
 
 \subsection{Explication et remarques à propos de l'implémentation}
-\lipsum[1]
 
 %----------------------------------------------------------------------------------------
 %	Statistiques

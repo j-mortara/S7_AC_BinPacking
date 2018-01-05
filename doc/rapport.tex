@@ -141,6 +141,7 @@
 \section{First Fit}
 \subsection{Description théorique de l'algorithme}
 L'algorithme First Fit a pour principe de rechercher la première boîte pouvant contenir l'item courant en commençant par la plus ancienne, si aucune boîte ne peut contenir l'item, on en ouvre une nouvelle.
+Complexité en O(n²)
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
@@ -167,14 +168,50 @@ def first_fit(inputs):
 \end{lstlisting}
 
 \subsection{Explication et remarques à propos de l'implémentation}
+\begin{itemize}
+  \item Cet algorithme a pour avantage d'avoir théoriquement la recherche la plus rapide étant donné qu'il recherche la première boîte susceptible de contenir l'item courant.
+  \item Si on considère que notre nombre de boîtes n'est pas illimité on pourrait avoir des items non alloués dans certains exemples, par exemple:
+  \begin{itemize}
+  \item 5 boîtes de capacité 100, 500, 200, 300, 600
+  \item 4 items de poids 212, 417, 112, 426
+  \end{itemize}
+  Avec l'algorithme First Fit, l'item de capacité 212 serait affecté à la boîte de capacité 500, l'item 417 à la boîte 600, l'item 112 à la boîte 500 et l'item 426 ne serait pas alloué. Alors qu'avec un autre algorithme, Best Fit notamment, l'affectation reste possible avec ces 5 boîtes.
+\end{itemize}
+
+\subsection{Optimisation de l'algorithme}
 Notre implémentation du first fit reprend la description donnée précédemment 
 tout en y ajoutant une subtilité en s'inspirant de l'algorithme Next Fit. Lors que nous plaçons un objet de taille t dans une boite
 d'index i, nous gardons en mémoire ces deux informations. Lorsque nous débutons l'itération 
 sur l'objet suivant, si la taille de cet objet est supérieure ou égale à la taille de l'objet placé précédemment, nous ne repartons pas
 de l'index 0 mais de l'index où l'objet a été placé (puisque les boites les plus anciennes ne pouvaient déjà plus contenir cet objet 
 de taille inférieure ou égale).
-
 Lors de la toute première itération (premier objet à placer), nous considérons un objet de taille infinie.
+
+\begin{lstlisting}[language=Python, frame=single]
+def first_fit_enhanced(inputs):
+    bins = [0] * len(inputs[1])
+    index = 0
+    # For the first iteration we are considering the previous item as an infinite weighted item.
+    previousItem = float('inf')
+    previousIndex = -1
+    for item in inputs[1]:
+        # If the next item is lighter than the previous one, iterate from 0
+        if item < previousItem:
+            iterator = 0
+        # Else we are starting to iterate from the last bin used (the bins before are too full to be used).
+        else:
+            iterator = previousIndex
+        # We are iterating to a bin used
+        while item + bins[iterator] > inputs[0]:
+            iterator += 1
+        # Store the item, save its weight and the bin index used.
+        bins[iterator] += item
+        previousItem = item
+        previousIndex = iterator
+
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+\end{lstlisting}
 
 %----------------------------------------------------------------------------------------
 %	Next Fit
@@ -185,7 +222,8 @@ Lors de la toute première itération (premier objet à placer), nous considéro
 \section{Next Fit}
 
 \subsection{Description théorique de l'algorithme}
-L'algorithme Next Fit est très similaire à First Fit, la seule différence se fait lors de la recherche d'une boîte qui pourrait contenir l'item courant, l'itération se fait à partir de la dernière boîte utilisé au lieu de la première.
+L'algorithme Next Fit est très simple, tant que les items peuvent être alloués à la boîte courante, ils sont alloués sinon on passe à la boîte suivante.
+Complexité en O(n)
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
@@ -329,6 +367,7 @@ Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte 
 \section{Best Fit}
 \subsection{Description théorique de l'algorithme}
 L'algorithme Best Fit s'appuie sur la recherche de la boîte avec la plus petite capacité disponible suffisante pour l'item courant.
+Complexité en O(n²)
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]

@@ -145,28 +145,23 @@ L'algorithme First Fit a pour principe de rechercher la première boîte pouvant
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
 def first_fit(inputs):
-    bins = [0] * len(inputs[1])
-    index = 0
-    # For the first iteration we are considering the previous item
-    # as an infinite weighted item.
-    previousItem = float('inf')
-    previousIndex = -1
-    for item in inputs[1]:
-        # If the next item is lighter than the previous one, iterate from 0
-        if item < previousItem:
-            iterator = 0
-        # Else we are starting to iterate from the last bin used
-        # (the bins before are too full to be used).
+    bins = [0] * len(inputs[1])  # Bin initialization
+    index = 0  # iterator items
+    for item in inputs[1]:  # for each items to pack
+        # if the bin cannot contain the item
+        if item + bins[index] > inputs[0]:
+            j = 0
+            # we browse the bins until we find one that can contain the item
+            while item + bins[j] > inputs[0] and j < index:
+                j += 1
+            # if, arrived at current index, no bin can contain the item, we add one
+            if j == index and item + bins[j] > inputs[0]:
+                index += 1
+                j = index
+            bins[j] += item
+        # if the bin can contain the item, we add it in the bin
         else:
-            iterator = previousIndex
-        # We are iterating to a bin usa
-        while item + bins[iterator] > inputs[0]:
-            iterator += 1
-        # Store the item, save its weight and the bin index used.
-        bins[iterator] += item
-        previousItem = item
-        previousIndex = iterator
-
+            bins[index] += item
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
 \end{lstlisting}
@@ -269,7 +264,7 @@ def worst_fit(inputs):
 \section{Almost Worst Fit}
 
 \subsection{Description théorique de l'algorithme}
-Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la seconde boîte avec le plus d'espace disponible.
+Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte avec la seconde plus grande capacité disponible.
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
@@ -333,7 +328,7 @@ Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la seconde
 
 \section{Best Fit}
 \subsection{Description théorique de l'algorithme}
-Best Fit s'appuie sur la recherche de la boîte avec le plus petit espace suffisant pour l'item courant.
+L'algorithme Best Fit s'appuie sur la recherche de la boîte avec la plus petite capacité disponible suffisante pour l'item courant.
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]

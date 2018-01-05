@@ -35,7 +35,7 @@ def next_fit(inputs):
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
 # Complexity : Worst case -> when the item to place is lighter than the previous one, we are starting to iterate from index 0 => O(n^2)
 # Complexity : Best case -> when the item to place is weighter (or equal) than the previous one, we are starting to iterate from the previous index 0 => O(???)
-def first_fit(inputs):
+def first_fit_enhanced(inputs):
     bins = [0] * len(inputs[1])
     index = 0
     # For the first iteration we are considering the previous item as an infinite weighted item.
@@ -48,7 +48,7 @@ def first_fit(inputs):
         # Else we are starting to iterate from the last bin used (the bins before are too full to be used).
         else:
             iterator = previousIndex
-        # We are iterating to a bin usa
+        # We are iterating to a bin used
         while item + bins[iterator] > inputs[0]:
             iterator += 1
         # Store the item, save its weight and the bin index used.
@@ -56,6 +56,28 @@ def first_fit(inputs):
         previousItem = item
         previousIndex = iterator
 
+    opened_bins = list(filter(lambda x: x > 0, bins))
+    return opened_bins
+
+
+def first_fit(inputs):
+    bins = [0] * len(inputs[1])  # Bin initialization
+    index = 0  # iterator items
+    for item in inputs[1]:  # for each items to pack
+        # if the bin cannot contain the item
+        if item + bins[index] > inputs[0]:
+            j = 0
+            # we browse the bins until we find one that can contain the item
+            while item + bins[j] > inputs[0] and j < index:
+                j += 1
+            # if, arrived at current index, no bin can contain the item, we add one
+            if j == index and item + bins[j] > inputs[0]:
+                index += 1
+                j = index
+            bins[j] += item
+        # if the bin can contain the item, we add it in the bin
+        else:
+            bins[index] += item
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
 

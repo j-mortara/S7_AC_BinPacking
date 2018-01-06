@@ -1,8 +1,10 @@
 algo.ex:
-	python3 source/$(basename $@).py "exemples/exemple100.txt" 
-	python3 source/$(basename $@).py "exemples/exemple500.txt" 
-	python3 source/$(basename $@).py "exemples/exemple1000.txt" 
-	python3 source/$(basename $@).py "exemples/monexemple.txt" 
+	touch algo.ex
+	echo python3 source/$(basename $@).py "exemples/exemple100.txt" >> algo.ex
+	echo python3 source/$(basename $@).py "exemples/exemple500.txt" >> algo.ex
+	echo python3 source/$(basename $@).py "exemples/exemple1000.txt" >> algo.ex
+	echo python3 source/$(basename $@).py "exemples/monexemple.txt" >> algo.ex
 
 stat.ex:
-	python3 source/$(basename $@).py
+	touch stat.ex
+	echo python3 source/$(basename $@).py >> stat.ex

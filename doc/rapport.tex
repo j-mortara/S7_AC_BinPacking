@@ -34,6 +34,7 @@
 \usepackage{courier} % Required for the courier font
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 \usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
 % Margins
@@ -276,9 +277,9 @@ def next_fit(inputs):
 \subsection{Description théorique de l'algorithme}
 L'algorithme Worst Fit se base sur la recherche de la boîte ayant la plus grande capacité disponible.
 On met les objets dans la boite moins remplie parmis les boites déjà ouvertes.
-On ouvre une nouvelle boites seulement si aucune des boites ouvertes précédement ne peut contenir l'objet.
+On ouvre une nouvelle boite seulement si la boite la moins remplie ne peut pas contenir l'objet.
 Si plusieurs boites ont une capacité égale on met l'objet dans la boite ouverte en premier.
-Complexité en $O(n^2)$
+Complexité en $O(n^2)$.
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
 def worst_fit(inputs):
@@ -309,8 +310,25 @@ def worst_fit(inputs):
 \end{lstlisting}
 
 \subsection{Explication et remarques à propos de l'implémentation}
-
-
+Cet algorithme répartit les objets sur les boites utilisées et est donc utile lorsque les objets sont
+de taille similaire et que l'on veut remplir de manière uniforme les boites.
+\subsection{Optimisation de l'algorithme}
+La version présentée ci-dessus n'est pas la version la plus optimisée du worst fit
+en effet on peut trouver une version qui est en $O(n\log(n))$ au lieu de $O(n^2)$ grâce à l'utilisation
+d'un tas binaire.
+Ainsi on a accès en $O(1)$ à la boite la moins remplie et on peut insérer une nouvelle boite en $O(\log(n))$
+et remplacer la valeur d'une boite (enlever puis rajouter avec une nouvelle valeur) en $O(\log(n))$
+ce qui fait qu'on a une complexité en $O(n\log(n))$.
+\begin{lstlisting}[language=Python, frame=single]
+def _worst_fit_log(inputs):
+    heap = []
+    for item in inputs[1]:
+        if len(heap) == 0 or heap[0][0] + item > inputs[0]:
+            heappush(heap, [item, len(heap)])
+        else:
+            heapreplace(heap, [heap[0][0] + item, heap[0][1]])
+    return heap
+\end{lstlisting}
 %----------------------------------------------------------------------------------------
 %	Almost Worst Fit
 %----------------------------------------------------------------------------------------
@@ -320,7 +338,11 @@ def worst_fit(inputs):
 \section{Almost Worst Fit}
 
 \subsection{Description théorique de l'algorithme}
-Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte avec la seconde plus grande capacité disponible.
+Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte avec la seconde plus grande capacité
+disponible.
+Si cette boite ne peut pas contenir l'objet alors on récupère la boite de plus grande capacité.
+Si non on rajoute une boite.
+Complexité en $O(n^2)$
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]

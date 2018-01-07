@@ -281,9 +281,9 @@ def next_fit(inputs):
 
 \subsection{Description théorique de l'algorithme}
 L'algorithme Worst Fit se base sur la recherche de la boîte ayant la plus grande capacité disponible.
-On met les objets dans la boîte moins remplie parmis les boites déjà ouvertes.
+On met les objets dans la boîte moins remplie parmis les boîtes déjà ouvertes.
 On ouvre une nouvelle boîte seulement si la boîte la moins remplie ne peut pas contenir l'objet.
-Si plusieurs boites ont une capacité égale on met l'objet dans la boîte ouverte en premier.
+Si plusieurs boîtes ont une capacité égale on met l'objet dans la boîte ouverte en premier.
 Complexité en $O(n^2)$.
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
@@ -315,8 +315,8 @@ def worst_fit(inputs):
 \end{lstlisting}
 
 \subsection{Explication et remarques à propos de l'implémentation}
-Cet algorithme répartit les objets sur les boites utilisées et est donc utile lorsque les objets sont
-de taille similaire et que l'on veut remplir de manière uniforme les boites.
+Cet algorithme répartit les objets sur les boîtes utilisées et est donc utile lorsque les objets sont
+de taille similaire et que l'on veut remplir de manière uniforme les boîtes.
 \subsection{Optimisation de l'algorithme}
 La version présentée ci-dessus n'est pas la version la plus optimisée du worst fit
 en effet on peut trouver une version qui est en $O(n\log(n))$ au lieu de $O(n^2)$ grâce à l'utilisation
@@ -546,17 +546,12 @@ first\_fit est le seul algorithme à avoir utilisé 7 boîtes contre 8 pour les 
 
 \subsection{Conclusion}
 
-Les deux meilleurs algorithmes pour les 4 exemples cités précédemment sont best\_fit et first\_fit,
-best\_fit réussi toujours à mieux optimiser le packing des objets que first\_fit mais dans un temps un peu plus elevé.
-La différence de ces temps restant assez négligeable pour les cas 100, 500 et 1000, il conviendrait mieux d'utiliser best\_fit pour un packing optimal
-Néanmoins comme le montre monexample il y a des exceptions, dans ce cas les boites sont de capacité 524,
-les objets sont triés dans l'ordre décroissant ce qui avantage first\_fit et leur somme vaut exactement un multiple de 524
-Nous avons essayé de réitérer cet exemple avec quelques capacités différentes nous avons pas réussi à obtenir la même chose.
-Ce cas étant un cas assez peu courant à priori, nous aurons plutôt tendance à utiliser best\_fit.
-
-source du monexample
-\url{https://people.sc.fsu.edu/~jburkardt/datasets/bin\%5Fpacking/bin\%5Fpacking.html}
-
-
+Les deux meilleurs algorithmes pour les 4 exemples cités précédemment sont Best Fit et First Fit.
+Best Fit réussit toujours à mieux optimiser le packing des objets que First Fit, mais dans un temps un peu plus élevé.
+La différence entre ces durées restant assez négligeable pour les cas 100, 500 et 1000, il conviendrait mieux d'utiliser Best Fit pour un packing optimal.
+Néanmoins, comme le montre \texttt{monexample}\footnote{source : \url{https://people.sc.fsu.edu/~jburkardt/datasets/bin\%5Fpacking/bin\%5Fpacking.html}}, il y a des exceptions : dans ce cas, les boîtes sont de capacité 524,
+les objets sont triés dans l'ordre décroissant (ce qui avantage First Fit) et leur somme vaut exactement un multiple de 524.
+Nous avons essayé de réitérer cet exemple avec des capacités différentes mais n'avons pas réussi à obtenir la même chose.
+Ce cas étant a priori un cas assez peu courant, nous aurons plutôt tendance à utiliser Best Fit.
 
 \end{document}

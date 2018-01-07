@@ -342,7 +342,6 @@ Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte 
 disponible.
 Si l'objet ne rentre pas dans la boîte alors l'algorithme est le même que le Worst Fit.
 Complexité en $O(n^2)$.
-
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
     bins = [0] * len(inputs[1])
@@ -384,7 +383,8 @@ Complexité en $O(n^2)$.
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
 \end{lstlisting}
-
+\subsection{Optimisation de l'algorithme}
+De la même manière que pour le Worst Fit on pourrait utiliser un tas binaire pour que cet algorithme soit en $O(n\log(n))$
 
 %----------------------------------------------------------------------------------------
 %	Best Fit

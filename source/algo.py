@@ -219,6 +219,7 @@ def get_inputs(file_path):
 
 def execFunctions(functions, objects, bin_size):
     print(argv[1])
+    print()
     for f in functions:
         stats = execStats(f, (bin_size, objects))
         printStats(f.__name__, objects, *stats)

@@ -30,6 +30,7 @@
 \usepackage[usenames,dvipsnames]{color} % Required for custom colors
 \usepackage{graphicx} % Required to insert images
 \usepackage{array}
+\usepackage{hyperref}
 \graphicspath{ {images/} }
 \usepackage{listings} % Required for insertion of code
 \usepackage{courier} % Required for the courier font
@@ -538,21 +539,21 @@ Tableau de comparaison des deux meilleurs algorithmes
 \end{tabular}
 
 
-first_fit est le seul algorithme à avoir utilisé 7 boîtes contre 8 pour les autres algorithmes.
+first\_fit est le seul algorithme à avoir utilisé 7 boîtes contre 8 pour les autres algorithmes.
 
 
 \subsection{Conclusion}
 
-Les deux meilleurs algorithmes pour les 4 exemples cités précédemment sont best_fit et first_fit,
-best_fit réussi toujours à mieux optimiser le packing des objets que first_fit mais dans un temps un peu plus elevé.
-La différence de ces temps restant assez négligeable pour les cas 100, 500 et 1000, il conviendrait mieux d'utiliser best_fit pour un packing optimal
+Les deux meilleurs algorithmes pour les 4 exemples cités précédemment sont best\_fit et first\_fit,
+best\_fit réussi toujours à mieux optimiser le packing des objets que first\_fit mais dans un temps un peu plus elevé.
+La différence de ces temps restant assez négligeable pour les cas 100, 500 et 1000, il conviendrait mieux d'utiliser best\_fit pour un packing optimal
 Néanmoins comme le montre monexample il y a des exceptions, dans ce cas les boites sont de capacité 524,
-les objets sont triés dans l'ordre décroissant ce qui avantage first_fit et leur somme vaut exactement un multiple de 524
+les objets sont triés dans l'ordre décroissant ce qui avantage first\_fit et leur somme vaut exactement un multiple de 524
 Nous avons essayé de réitérer cet exemple avec quelques capacités différentes nous avons pas réussi à obtenir la même chose.
-Ce cas étant un cas assez peu courant à priori, nous aurons plutôt tendance à utiliser best_fit.
+Ce cas étant un cas assez peu courant à priori, nous aurons plutôt tendance à utiliser best\_fit.
 
 source du monexample
-https://people.sc.fsu.edu/~jburkardt/datasets/bin_packing/bin_packing.html
+\url{https://people.sc.fsu.edu/~jburkardt/datasets/bin\%5Fpacking/bin\%5Fpacking.html}
 
 
 

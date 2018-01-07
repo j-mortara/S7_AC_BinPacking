@@ -43,7 +43,6 @@ def first_fit(inputs):
 # to iterate from the previous index 0 => O(???)
 def first_fit_enhanced(inputs):
     bins = [0] * len(inputs[1])
-    index = 0
     # For the first iteration we are considering the previous item as an infinite weighted item.
     previousItem = float('inf')
     previousIndex = -1
@@ -153,7 +152,6 @@ def almost_worst_fit(inputs):
 # We use a heap to represent this problem, as we have O(1) access to the lowest value.
 # Insertion in the heap is done in O(log n) for each item, therefore the complexity is O(n log n).
 def _worst_fit_log(inputs):
-    # bins = [[0, 0] for _ in range(len(inputs[1]))]
     heap = []
     for item in inputs[1]:
         if len(heap) == 0 or heap[0][0] + item > inputs[0]:
@@ -169,7 +167,6 @@ def _worst_fit_log_golf(inputs):
     return heap
 
 def worst_fit_log(inputs):
-    # bins = [[0, 0] for _ in range(len(inputs[1]))]
     return [i[0] for i in _worst_fit_log(inputs)]
 
 

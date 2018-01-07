@@ -193,20 +193,14 @@ def first_fit(inputs):
 \subsection{Explication et remarques à propos de l'implémentation}
 \begin{itemize}
   \item Cet algorithme a pour avantage d'avoir théoriquement la recherche la plus rapide étant donné qu'il recherche la première boîte susceptible de contenir l'item courant.
-  \item Si on considère que notre nombre de boîtes n'est pas illimité, nous pourrions avoir des items non alloués dans certains cas. Par exemple:
-  \begin{itemize}
-  \item 5 boîtes de capacité 100, 500, 200, 300, 600
-  \item 4 items de poids 212, 417, 112, 426
-  \end{itemize}
-  Avec l'algorithme First Fit, l'item de capacité 212 serait affecté à la boîte de capacité 500, l'item 417 à la boîte 600, l'item 112 à la boîte 500 et l'item 426 ne serait pas alloué. Alors qu'avec un autre algorithme, Best Fit notamment, l'affectation reste possible avec ces 5 boîtes.
 \end{itemize}
 
 \subsection{Optimisation de l'algorithme}
 Notre implémentation du First Fit reprend la description donnée précédemment. Cependant, en ajoutant une subtilité en s'inspirant de l'algorithme Next Fit, il est possible d'en réduire la complexité.
 
-Lors que nous plaçons un objet de taille \texttt{t} dans une boîte d'index \texttt{i}, il suffit de garder en mémoire ces deux informations.
+Lorsque nous plaçons un objet de taille \texttt{t} dans une boîte d'index \texttt{i}, il suffit de garder en mémoire ces deux informations.
 Lors du placement de l'objet suivant, si la taille de cet objet est supérieure ou égale à la taille de l'objet placé précédemment,
-il est inutile de repartir de l'index 0. Il est en effet plus intéressant de repartir de l'index où l'objet précédent a été placé (puisque les boîtes les plus anciennes ne pouvaient déjà plus contenir cet objet de taille inférieure ou égale).
+il est inutile de repartir de l'index \texttt{0}. Il est en effet plus intéressant de repartir de l'index où l'objet précédent a été placé (puisque les boîtes les plus anciennes ne pouvaient déjà plus contenir cet objet de taille inférieure ou égale).
 
 Dans cette version de l'algorithme, lors de la toute première itération (premier objet à placer), nous considérons un objet de taille infinie.
 
@@ -281,10 +275,11 @@ def next_fit(inputs):
 
 \subsection{Description théorique de l'algorithme}
 L'algorithme Worst Fit se base sur la recherche de la boîte ayant la plus grande capacité disponible.
-On met les objets dans la boîte moins remplie parmis les boîtes déjà ouvertes.
+On met les objets dans la boîte la moins remplie parmi les boîtes déjà ouvertes.
 On ouvre une nouvelle boîte seulement si la boîte la moins remplie ne peut pas contenir l'objet.
-Si plusieurs boîtes ont une capacité égale on met l'objet dans la boîte ouverte en premier.
+S'il y a plusieurs boîtes sont de capacité minimale, alors on place l'objet dans la boîte la plus ancienne.
 Complexité en $O(n^2)$.
+
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
 def worst_fit(inputs):
@@ -345,7 +340,7 @@ def _worst_fit_log(inputs):
 \subsection{Description théorique de l'algorithme}
 Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte avec la seconde plus grande capacité
 disponible.
-Si l'objet ne rentre pas dans la boîte alors l'agorithme est le même que le worst fit.
+Si l'objet ne rentre pas dans la boîte alors l'algorithme est le même que le Worst Fit.
 Complexité en $O(n^2)$.
 
 \subsection{Implémentation de l'algorithme}
@@ -390,8 +385,6 @@ Complexité en $O(n^2)$.
     return opened_bins
 \end{lstlisting}
 
-\subsection{Explication et remarques à propos de l'implémentation}
-
 
 %----------------------------------------------------------------------------------------
 %	Best Fit
@@ -401,7 +394,7 @@ Complexité en $O(n^2)$.
 
 \section{Best Fit}
 \subsection{Description théorique de l'algorithme}
-L'algorithme Best Fit s'appuie sur la recherche de la boîte avec la plus petite capacité disponible suffisante pour l'item courant.
+L'algorithme Best Fit s'appuie sur la recherche de la boîte avec la plus petite capacité restante suffisante pour l'item courant.
 Complexité en $O(n^2)$
 
 \subsection{Implémentation de l'algorithme}
@@ -440,14 +433,12 @@ def best_fit(inputs):
     return opened_bins
 \end{lstlisting}
 
-\subsection{Explication et remarques à propos de l'implémentation}
-
 %----------------------------------------------------------------------------------------
 %	Statistiques
 %----------------------------------------------------------------------------------------
+\clearpage
 \section{Analyse et comparaison des algorithmes}
 
-\clearpage
 \subsection{Exemple capacité 100}
 \begin{figure}[h]
 \begin{center}

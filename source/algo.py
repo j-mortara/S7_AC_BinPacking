@@ -167,7 +167,7 @@ def _worst_fit_log(inputs):
         if len(heap) == 0 or heap[0][0] + item > inputs[0]:
             heappush(heap, [item, len(heap)])  # O(log n)
         else:
-            heapreplace(heap, [heap[0][0] + item, heap[0][1]])  # O(1) for access, O(log n) for insert
+            heapreplace(heap, [heap[0][0] + item, heap[0][1]])  # O(log(n)) for deletion, O(log n) for insert
     return heap
 
 

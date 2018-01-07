@@ -29,6 +29,7 @@
 \usepackage{extramarks} % Required for headers and footers
 \usepackage[usenames,dvipsnames]{color} % Required for custom colors
 \usepackage{graphicx} % Required to insert images
+\usepackage{array}
 \graphicspath{ {images/} }
 \usepackage{listings} % Required for insertion of code
 \usepackage{courier} % Required for the courier font
@@ -443,8 +444,7 @@ def best_fit(inputs):
 %----------------------------------------------------------------------------------------
 
 \section{Analyse et comparaison des algorithmes}
-\subsection{Exemple proposé}
-\subsection{Analyse des temps d'exécutions}
+\subsection{Exemple capacité 100}
 \begin{figure}
 \begin{center}
 \includegraphics{exemple100.png}
@@ -453,23 +453,107 @@ def best_fit(inputs):
 \end{figure}
 \begin{figure}
 \begin{center}
+
+exemple100
+
+Tableau de comparaison des deux meilleurs algorithmes
+
+\begin{tabular}{|l|c|r|}
+  \hline
+  Algorithme & Temps d'exécution en s & Boîtes utilisées \\
+  \hline
+  first\_fit & 8,70E-05 & 18 \\
+  best\_fit & 25,3E-05  & 17 \\
+  \hline
+\end{tabular}
+
+
+
+
+\subsection{Exemple capacité 500}
 \includegraphics{exemple500.png}
 \end{center}
 \caption{Exemple 500}
 \end{figure}
 \begin{figure}
 \begin{center}
+
+
+exemple500
+
+Tableau de comparaison des deux meilleurs algorithmes
+
+\begin{tabular}{|l|c|r|}
+  \hline
+  Algorithme & Temps d'exécution en s & Boîtes utilisées \\
+  \hline
+  first\_fit & 1,09E-03 & 94 \\
+  best\_fit & 7,49E-03  & 93 \\
+  \hline
+\end{tabular}
+
+
+\subsection{Exemple capacité 1000}
 \includegraphics{exemple1000.png}
 \end{center}
 \caption{Exemple 1000}
 \end{figure}
 \begin{figure}
 \begin{center}
+
+
+exemple 1000
+
+Tableau de comparaison des deux meilleurs algorithmes
+
+\begin{tabular}{|l|c|r|}
+  \hline
+  Algorithme & Temps d'exécution en s & Boîtes utilisées \\
+  \hline
+  first\_fit & 5,13E-03 & 197 \\
+  best\_fit & 16,15E-03  & 195 \\
+  \hline
+\end{tabular}
+
+
+\subsection{Exemple proposé}
 \includegraphics{monexemple.png}
 \end{center}
 \caption{Mon exemple}
 \end{figure}
 
 
-\subsection{Analyse de l'espace utilisé}
+MonExemple
+
+
+Tableau de comparaison des deux meilleurs algorithmes
+
+\begin{tabular}{|l|c|r|}
+  \hline
+  Algorithme & Temps d'exécution en s & Boîtes utilisées \\
+  \hline
+  first\_fit & 3,60E-05  & 7 \\
+  best\_fit & 5,80E-05  & 8 \\
+  \hline
+\end{tabular}
+
+
+first_fit est le seul algorithme à avoir utilisé 7 boîtes contre 8 pour les autres algorithmes.
+
+
+\subsection{Conclusion}
+
+Les deux meilleurs algorithmes pour les 4 exemples cités précédemment sont best_fit et first_fit,
+best_fit réussi toujours à mieux optimiser le packing des objets que first_fit mais dans un temps un peu plus elevé.
+La différence de ces temps restant assez négligeable pour les cas 100, 500 et 1000, il conviendrait mieux d'utiliser best_fit pour un packing optimal
+Néanmoins comme le montre monexample il y a des exceptions, dans ce cas les boites sont de capacité 524,
+les objets sont triés dans l'ordre décroissant ce qui avantage first_fit et leur somme vaut exactement un multiple de 524
+Nous avons essayé de réitérer cet exemple avec quelques capacités différentes nous avons pas réussi à obtenir la même chose.
+Ce cas étant un cas assez peu courant à priori, nous aurons plutôt tendance à utiliser best_fit.
+
+source du monexample
+https://people.sc.fsu.edu/~jburkardt/datasets/bin_packing/bin_packing.html
+
+
+
 \end{document}

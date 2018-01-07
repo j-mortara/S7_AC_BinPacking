@@ -3,16 +3,7 @@
 from _heapq import *
 from sys import argv
 
-
-# def next_fit_no_list(inputs):
-#     nb_bins = 1
-#     remaining_space_in_bin = inputs[0]
-#     for item_value in inputs[1]:
-#         if item_value > remaining_space_in_bin:
-#             nb_bins += 1
-#             remaining_space_in_bin = inputs[0]
-#         remaining_space_in_bin -= item_value
-#     return nb_bins
+from stats import *
 
 
 # If the item fits in the same bin as the previous item, put it there. Otherwise, open a new bin and put it in there.
@@ -28,22 +19,22 @@ def next_fit(inputs):
         bins[index] += item  # add the new item
     # We keep the bins containing items by filtering the bins list, then we return the length of this filtered list.
     opened_bins = list(filter(lambda x: x > 0, bins))  # used to remove all unused (=empty) bins
-    print(len(opened_bins))
     return opened_bins
 
 
 def first_fit(inputs):
     bins = [0] * len(inputs[1])
     index = 0
-    
+
     for item in inputs[1]:  # for each items to pack
         j = index
-        while item + bins[j] > inputs[0] :
+        while item + bins[j] > inputs[0]:
             j += 1
         bins[j] += item
-       
+
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
+
 
 # Put each item as you come to it into the oldest (earliest opened) bin into which it fits.
 # Complexity : Worst case -> when the item to place is lighter than the previous one, we are starting to iterate
@@ -73,6 +64,7 @@ def first_fit_enhanced(inputs):
 
     opened_bins = list(filter(lambda x: x > 0, bins))
     return opened_bins
+
 
 # 1. Put each item into the emptiest bin among those with something in them.
 # Only start a new bin if the item doesn't fit into any bin that's already been started.
@@ -225,29 +217,18 @@ def get_inputs(file_path):
     return bin_size, objects
 
 
-if __name__ == '__main__':
+def execFunctions(functions, objects, bin_size):
+    print(argv[1])
+    for f in functions:
+        stats = execStats(f, (bin_size, objects))
+        printStats(f.__name__, objects, *stats)
+    print("-----------------------------------------------------------------------------------------------------------")
+
+def main():
     values = get_inputs(argv[1])
-    print("next fit :")
-    nf = next_fit(values)
-    print(nf)
-    print(len(nf))
-    print("first fit :")
-    ff = first_fit(values)
-    print(ff)
-    print(len(ff))
-    print("worst fit :")
-    wf = worst_fit(values)
-    print(wf)
-    print(len(wf))
-    print("worst fit nlogn :")
-    wf_log = worst_fit_log(values)
-    print(wf_log)
-    print(len(wf_log))
-    print("almost worst fit :")
-    awf = almost_worst_fit(values)
-    print(awf)
-    print(len(awf))
-    print("best fit :")
-    bf = best_fit(values)
-    print(bf)
-    print(len(bf))
+    functions = [next_fit, first_fit, worst_fit, worst_fit_log, almost_worst_fit, best_fit]
+    execFunctions(functions, values[1], values[0])
+
+
+if __name__ == '__main__':
+    main()

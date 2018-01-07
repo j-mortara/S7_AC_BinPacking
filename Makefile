@@ -1,3 +1,7 @@
+all:
+	make algo.ex
+	make stat.ex
+
 algo.ex:
 	touch algo.ex
 	echo "#!/bin/bash" >> algo.ex
@@ -11,8 +15,7 @@ stat.ex:
 	touch stat.ex
 	echo "#!/bin/bash" >> algo.ex
 	echo >> algo.ex
-	echo python3 source/$(basename $@).py >> stat.ex
+	echo python3 source/$(basename $@)s.py >> stat.ex
 
 clean:
-	rm algo.ex
-	rm stat.ex
+	rm -f algo.ex stat.ex

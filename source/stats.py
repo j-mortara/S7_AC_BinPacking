@@ -1,8 +1,6 @@
 #! /usr/bin/env python3
 
 import time
-from os import listdir
-from os.path import isfile, join, isdir
 from random import randint
 
 from algo import *
@@ -61,10 +59,8 @@ def printStats(name, objets, exec_time, percent, bin_number, result):
     """Prints the given statistics on the standard output, name corresponds to
     function's name, objets the objects given to the function
     """
-
     print(name)
-    print("Objets générés : " + str(objets))
-
+    print("Objets : " + str(objets))
     exec_time = round(exec_time, 6)
     print("Temps d'exécution", exec_time, "s")
     print("Résultat : " + str(result))
@@ -73,32 +69,13 @@ def printStats(name, objets, exec_time, percent, bin_number, result):
 
 
 def main():
-    functions = [next_fit, first_fit, worst_fit, worst_fit_log, almost_worst_fit, best_fit]
-    example = input("Fichier/dossier d'exemple (optionnel):")
-    if example == "":
-        # if no example is given doRandomTests
-        bin_size = int(input("Taille bin : "))
-        numbers_object = list(map(int, input("nombre d'objets : ").split(" ")))
-        valeur_min = int(input("Valeur minimale d'un objet : "))
-        valeur_max = int(input("Valeur maximale d'un objet : "))
-        doRandomTests(functions, bin_size, valeur_max, valeur_min, numbers_object)
-    else:
-        # if example is a directory then execute every examples in the directory
-        if isdir(example):
-            files = [f for f in listdir(example) if isfile(join(example, f))]
-            every_stats = {f.__name__: [] for f in functions}
-            for f in files:
-                bin_size, objects = get_inputs(join(example, f))
-                execFunctions(every_stats, functions, objects, bin_size)
-            with open(csv_path, "w") as file:
-                writeToCSVFile(file, files, every_stats)
-        else:
-            # else then execute only the given example
-            bin_size, objects = get_inputs(example)
-            every_stats = {f.__name__: [] for f in functions}
-            execFunctions(every_stats, functions, objects, bin_size)
-            with open(csv_path, "w") as file:
-                writeToCSVFile(file, [""], every_stats)
+    functions = [next_fit, first_fit, worst_fit, worst_fit_log, almost_worst_fit,
+                 best_fit]  # if no example is given doRandomTests
+    bin_size = int(input("Taille bin : "))
+    numbers_object = list(map(int, input("nombre d'objets : ").split(" ")))
+    valeur_min = int(input("Valeur minimale d'un objet : "))
+    valeur_max = int(input("Valeur maximale d'un objet : "))
+    doRandomTests(functions, bin_size, valeur_max, valeur_min, numbers_object)
 
 
 def doRandomTests(functions, bin_size, max_value, min_value, numbers_object):
@@ -114,12 +91,12 @@ def doRandomTests(functions, bin_size, max_value, min_value, numbers_object):
     every_stats = {f.__name__: [] for f in functions}
     for nb in numbers_object:
         objects = [randint(min_value, max_value) for _ in range(nb)]
-        execFunctions(every_stats, functions, objects, bin_size)
+        execFunctionsStats(every_stats, functions, objects, bin_size)
     with open(csv_path, "w") as file:
         writeToCSVFile(file, numbers_object, every_stats)
 
 
-def execFunctions(every_stats, functions, objects, bin_size):
+def execFunctionsStats(every_stats, functions, objects, bin_size):
     """ the function executes the given functions and adds their stats to every_stats dict
     :param every_stats: A dict with keys that are function and values that are arrays
     :param functions: a list of functions to execute

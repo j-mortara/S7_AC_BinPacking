@@ -139,7 +139,7 @@
 \newpage
 
 \section{Préambule}
-Nous prenons pour postulat que les objets proposés à l'algorithme sont de taille inférieure ou égale à celle d'une boite car dans le contraire, le problème n'aurait pas
+Nous prenons pour postulat que les objets proposés à l'algorithme sont de taille inférieure ou égale à celle d'une boîte car dans le cas contraire, le problème n'aurait pas
 de solutions.
 
 Dans les sections suivantes vous trouverez les implémentations des algorithmes en \textit{Python 3} sous la forme de fonctions respectant cette disposition :
@@ -161,7 +161,7 @@ def nomDeLalgorithme(inputs) :
 
 Le paramètre \texttt{inputs} correspond à un tableau :
     \begin{itemize}
-        \item \texttt{inputs[0]} :  Taille maximale d'une boite
+        \item \texttt{inputs[0]} :  Taille maximale d'une boîte
         \item \texttt{inputs[1]} :  Tableau contenant l'ensemble des objets à ranger
     \end{itemize}
 
@@ -204,7 +204,7 @@ def first_fit(inputs):
 \subsection{Optimisation de l'algorithme}
 Notre implémentation du First Fit reprend la description donnée précédemment. Cependant, en ajoutant une subtilité en s'inspirant de l'algorithme Next Fit, il est possible d'en réduire la complexité.
 
-Lors que nous plaçons un objet de taille \texttt{t} dans une boite d'index \texttt{i}, il suffit de garder en mémoire ces deux informations.
+Lors que nous plaçons un objet de taille \texttt{t} dans une boîte d'index \texttt{i}, il suffit de garder en mémoire ces deux informations.
 Lors du placement de l'objet suivant, si la taille de cet objet est supérieure ou égale à la taille de l'objet placé précédemment,
 il est inutile de repartir de l'index 0. Il est en effet plus intéressant de repartir de l'index où l'objet précédent a été placé (puisque les boîtes les plus anciennes ne pouvaient déjà plus contenir cet objet de taille inférieure ou égale).
 
@@ -280,8 +280,11 @@ def next_fit(inputs):
 \section{Worst Fit}
 
 \subsection{Description théorique de l'algorithme}
-L'algorithme Worst Fit se base sur la recherche de la boîte déjà ouverte ayant la plus grande capacité disponible.
-
+L'algorithme Worst Fit se base sur la recherche de la boîte ayant la plus grande capacité disponible.
+On met les objets dans la boîte moins remplie parmis les boites déjà ouvertes.
+On ouvre une nouvelle boîte seulement si la boîte la moins remplie ne peut pas contenir l'objet.
+Si plusieurs boites ont une capacité égale on met l'objet dans la boîte ouverte en premier.
+Complexité en $O(n^2)$.
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]
 def worst_fit(inputs):
@@ -318,8 +321,8 @@ de taille similaire et que l'on veut remplir de manière uniforme les boites.
 La version présentée ci-dessus n'est pas la version la plus optimisée du worst fit
 en effet on peut trouver une version qui est en $O(n\log(n))$ au lieu de $O(n^2)$ grâce à l'utilisation
 d'un tas binaire.
-Ainsi on a accès en $O(1)$ à la boite la moins remplie et on peut insérer une nouvelle boite en $O(\log(n))$
-et remplacer la valeur d'une boite (enlever puis rajouter avec une nouvelle valeur) en $O(\log(n))$
+Ainsi on a accès en $O(1)$ à la boîte la moins remplie et on peut insérer une nouvelle boîte en $O(\log(n))$
+et remplacer la valeur d'une boîte (enlever puis rajouter avec une nouvelle valeur) en $O(\log(n))$
 ce qui fait qu'on a une complexité en $O(n\log(n))$.
 \begin{lstlisting}[language=Python, frame=single]
 def _worst_fit_log(inputs):

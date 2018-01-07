@@ -171,9 +171,14 @@ def _worst_fit_log(inputs):
     return heap
 
 
+def _worst_fit_log_golf(inputs):
+    heap = []
+    [heappush(heap, [item, len(heap)]) if len(heap) == 0 or heap[0][0] + item > inputs[0] else heapreplace(heap, [heap[0][0] + item, heap[0][1]]) for item in inputs[1]]
+    return heap
+
 def worst_fit_log(inputs):
     # bins = [[0, 0] for _ in range(len(inputs[1]))]
-    return [i[0] for i in _worst_fit_log(inputs)]
+    return [i[0] for i in _worst_fit_log_golf(inputs)]
 
 
 # Place each item in the fullest one capable of containing the item.

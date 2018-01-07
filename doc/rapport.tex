@@ -342,9 +342,8 @@ def _worst_fit_log(inputs):
 \subsection{Description théorique de l'algorithme}
 Almost Worst Fit est similiaire à Worst Fit excepté qu'il recherche la boîte avec la seconde plus grande capacité
 disponible.
-Si cette boite ne peut pas contenir l'objet alors on récupère la boite de plus grande capacité.
-Si non on rajoute une boite.
-Complexité en $O(n^2)$
+Si l'objet ne rentre pas dans la boîte alors l'agorithme est le même que le worst fit.
+Complexité en $O(n^2)$.
 
 \subsection{Implémentation de l'algorithme}
 \begin{lstlisting}[language=Python, frame=single]

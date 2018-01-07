@@ -170,7 +170,7 @@ def _worst_fit_log_golf(inputs):
 
 def worst_fit_log(inputs):
     # bins = [[0, 0] for _ in range(len(inputs[1]))]
-    return [i[0] for i in _worst_fit_log_golf(inputs)]
+    return [i[0] for i in _worst_fit_log(inputs)]
 
 
 # Place each item in the fullest one capable of containing the item.
